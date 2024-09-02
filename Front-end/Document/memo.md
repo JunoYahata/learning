@@ -18,7 +18,7 @@
   </body>　        ← body終了タグ
 </html>　          ← html終了タグ
 ```
-サンプルは　  [HTMLSample.html](../Source/HTMLSample.html)
+サンプルは　  [HTMLSample.html](../Source/Sample/HTMLSample.html)
 
 ## CSS
 基本の形１（タグのstyle属性に記述）
@@ -34,7 +34,7 @@
   </body>
 </html>
 ```
-[CSSSample_1.html](../Source/CSSSample_1.html)
+[CSSSample_1.html](../Source/Sample/CSSSample_1.html)
 
 基本の形２（styleタグで定義）
 ```
@@ -55,7 +55,7 @@
   </body>
 </html>
 ```
-[CSSSample_2.html](../Source/CSSSample_2.html)
+[CSSSample_2.html](../Source/Sample/CSSSample_2.html)
 
 基本の形３（別ファイルで定義）
 ```
@@ -71,7 +71,7 @@
   </body>
 </html>
 ```
-[CSSSample_3.html](../Source/CSSSample_3.html)
+[CSSSample_3.html](../Source/Sample/CSSSample_3.html)
 
 ```
 p {
@@ -79,7 +79,7 @@ p {
     background-color: green;
 }
 ```
-[Sample.css](../Source/Sample.css)
+[Sample.css](../Source/Sample/Sample.css)
 
 ## JS
 基本の形１（scriptタグで記述）
@@ -98,7 +98,7 @@ p {
   </body>
 </html>
 ```
-[JSSample_1.html](../Source/JSSample_1.html)
+[JSSample_1.html](../Source/Sample/JSSample_1.html)
 
 基本の形２（別ファイルで定義）
 ```
@@ -114,9 +114,9 @@ p {
   </body>
 </html>
 ```
-[JSSample_2.html](../Source/JSSample_2.html)
+[JSSample_2.html](../Source/Sample/JSSample_2.html)
 
 ```
 alert("アラートがでた");
 ```
-[Sample.js](../Source/Sample.js)
+[Sample.js](../Source/Sample/Sample.js)
