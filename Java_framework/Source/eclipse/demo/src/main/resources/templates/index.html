@@ -3,11 +3,25 @@
  <head>
    <title>Hello World</title>
    <meta charset="utf-8" />
- </head>
+   <link rel="stylesheet" href="Home.css" />
+   </head>
  <body>
-   <h1>Spring Boot</h1>
+  <header>
+   <h1>Spring Boot!</h1>
    <p>
      <span th:text="${message}"></span>
+	 あなたは<span th:text="${gestnum}"></span>人目の来訪者
    </p>
+   </header>
+   <main>
+	メイン
+   </main>
+   <aside>
+	メニュー
+   </aside>
+   
+   <footer>
+	フッター
+   </footer>
  </body>
 </html>

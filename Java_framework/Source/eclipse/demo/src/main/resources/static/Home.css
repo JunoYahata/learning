@@ -1,0 +1,62 @@
+@charset "UTF-8";
+
+body {
+  display: grid;
+  margin: 0;
+  padding: 0;
+grid-template:
+    "A A" auto
+    "B C" 1fr
+    "D D" auto /
+    300px 1fr ;
+
+  /* 縦に小さい画面でフッターを画面下に配置するテクニック */
+  min-height: 100vh;
+}
+
+header {
+  grid-area: A;
+}
+aside {
+  grid-area: B;
+}
+main {
+  grid-area: C;
+}
+
+footer {
+  grid-area: D;
+}
+
+/* ヘッダー部分 */
+header {
+
+background-color: rgb(128, 128, 128); /* 灰色 */
+  text-align: center; /* 中央寄せ */
+  padding: 16px; /* 余白 */
+}
+
+/* メイン部分 */
+main {
+  padding: 32px;
+}
+
+main img {
+  width: 100%;
+  height: auto;
+}
+
+/* 右サイド部分 */
+aside {
+  background-color: rgb(128, 255, 255);
+  padding: 16px 32px; /* 余白 */
+}
+
+/* フッター部分 */
+footer {
+  background-color: rgb(128, 128, 128); /* 灰色 */
+  text-align: center; /* 中央寄せ */
+
+ padding: 16px; /* 余白 */
+}
+  
