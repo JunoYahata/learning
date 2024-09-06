@@ -15,12 +15,12 @@
    </p>
    </header>
    <main>
-	 <h2 class="main">メイン	</h2>
+	 <h2 class="main" id="mainView">メイン	</h2>
 	 <iframe class="main hidden" id="listView" src="list"></iframe>
    </main>
    <aside>
-	<h2>メニュー</h2>
-	<div id="list" data-target="'#listView">DB(NumRec)データ一覧</div>
+	<h2 class="menu" data-param='#mainView'>メニュー</h2>
+	<div id="list" data-param='#listView' class="menu">DB(NumRec)データ一覧</div>
    </aside>
    
    <footer>
