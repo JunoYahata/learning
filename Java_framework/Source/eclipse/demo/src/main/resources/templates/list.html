@@ -5,8 +5,14 @@
 <title>list</title>
 </head>
 <body>
-    <table>
-        <tr th:each="list : ${page}" th:object="${list}">
+    <table text="NumRecテーブルの値一覧" frame="box" rules="all">
+		<tr>
+			<td>ID</td>
+			<td>種別</td>
+			<td>数値</td>
+		</tr>
+        <tr th:each="list : ${page}" th:object="${list}">		
+			<td th:text="*{id}"></td>
             <td th:text="*{classification}"></td>
             <td th:text="*{num}"></td>
         </tr>

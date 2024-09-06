@@ -4,20 +4,23 @@
    <title>Hello World</title>
    <meta charset="utf-8" />
    <link rel="stylesheet" href="Home.css" />
+   <script defer src="Home.js"></script>
    </head>
  <body>
   <header>
-   <h1>Spring Boot!</h1>
+   <h1>Spring Boot 勉強中！</h1>
    <p>
      <span th:text="${message}"></span>
 	 あなたは<span th:text="${gestnum}"></span>人目の来訪者
    </p>
    </header>
    <main>
-	メイン
+	 <h2 class="main">メイン	</h2>
+	 <iframe class="main hidden" id="listView" src="list"></iframe>
    </main>
    <aside>
-	メニュー
+	<h2>メニュー</h2>
+	<div id="list" data-target="'#listView">DB(NumRec)データ一覧</div>
    </aside>
    
    <footer>
