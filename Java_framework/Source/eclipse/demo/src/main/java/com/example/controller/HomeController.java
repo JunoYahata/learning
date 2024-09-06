@@ -17,13 +17,12 @@ public class HomeController {
     @GetMapping("/")
     public String helloWorld(Model model) {
         model.addAttribute("message", "Hello World!!");
+        service.countUpGestNum();
         int gestnum = service.findAll().get(0).getNum();
         model.addAttribute("gestnum", String.valueOf(gestnum));
         
         return "index";
     }
-    
-	
     
     @GetMapping("/list")
     public ModelAndView testList(ModelAndView mav) {

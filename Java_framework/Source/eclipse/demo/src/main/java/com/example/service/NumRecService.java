@@ -17,5 +17,18 @@ public class NumRecService {
     public List<NumRec> findAll() {
         return repository.findAll();
     }
+    public NumRec find(int id) {
+        return repository.findById(id).orElse(new NumRec());
+    }
+    
+    public void save(NumRec numrec) {
+    	repository.save(numrec);
+    }
+    
+    public void countUpGestNum() {
+        NumRec numRec = find(1);
+        numRec.setNum(find(1).getNum()+1);
+        save(numRec);
+    }
     
 }
