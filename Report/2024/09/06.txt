@@ -1,0 +1,30 @@
+業務を開始します。
+
+業務予定時間：
+9:00～18:00
+
+予定：
+・Javaフレームワーク学習（Spring）
+・フロントエンド実装の学習（HTML、CSS、JavaScript）
+
+業務を終了します。
+
+【日報】
+2024/09/06
+
+【業務終了時刻】
+18:00
+
+【業務内容】
+・Javaフレームワーク学習（Spring）
+　→参考書「Spring徹底入門 第2版 Spring FrameworkによるJavaアプリケーション開発」P32～P98
+　→WebアプリからDBにupdate/insert、DI（依存性注入）、controller、model、repository、service、Configuration、Bean
+
+・フロントエンド実装の学習（HTML、CSS、JavaScript）
+　→参考書「フロントエンドの知識地図」P152～P179
+　　標準仕様、ブラウザの互換性
+　→実装演習（neme、class、id、JSラムダ式、querySelector、addEventListener、forEach）
+
+・QA 学習
+　→参考書「【この1冊でよくわかる】ソフトウェアテストの教科書」P1～P104
+　　欠陥とは、テストの視点、テスト工程の流れ、テスト観点、ホワイトボックステスト、ブラックボックステスト
