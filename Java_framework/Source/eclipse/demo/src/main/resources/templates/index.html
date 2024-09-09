@@ -16,11 +16,19 @@
    </header>
    <main>
 	 <h2 class="main" id="mainView">メイン	</h2>
-	 <iframe class="main hidden" id="listView" src="list"></iframe>
+	 <iframe class="main hidden" id="listView" src="list" frameborder="0" style="border: none"></iframe>
    </main>
    <aside>
-	<h2 class="menu" data-param='#mainView'>メニュー</h2>
-	<div id="list" data-param='#listView' class="menu">DB(NumRec)データ一覧</div>
+	<input type="checkbox" id="menu_toggle" class="hidden">
+	<label for="menu_toggle" class="menu_button">
+		<span class="bar"></span>
+		<span class="bar"></span>
+		<span class="bar"></span>
+	</label>
+	<nav class="menu_bar">
+		<h2 class="menu" data-param='#mainView'>メニュー</h2>
+		<div class="menu" id="list" data-param='#listView'>DB(NumRec)データ一覧</div>
+	</nav>
    </aside>
    
    <footer>
