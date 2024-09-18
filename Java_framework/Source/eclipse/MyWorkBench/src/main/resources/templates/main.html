@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+ <head>
+   <title>作業用WEBサイト（作成中）</title>
+   <meta charset="utf-8" />
+   <link rel="stylesheet" href="common.css" />
+   <link rel="stylesheet" href="main.css" />
+   <script defer src="main.js"></script>
+ </head>
+ <body>
+    <header>
+        <span>作業用ホームページ</span>
+    </header>
+    <main>
+        <span>メイン</span>
+        <div class="tab_selector">
+            <input type="radio" name="tab_selector" class="tab_radio hidden" id="main_radio" data-contents="#main_contents" checked>
+			<label for="main_radio">HOME</label>
+            <input type="radio" name="tab_selector" class="tab_radio hidden" id="memo_radio" data-contents="#memo_contents">
+			<label for="memo_radio">MEMO</label>
+            <input type="radio" name="tab_selector" class="tab_radio hidden" id="task_radio" data-contents="#task_contents">
+			<label for="task_radio">TASK</label>
+            <input type="radio" name="tab_selector" class="tab_radio hidden" id="slack_radio" data-contents="#slack_contents">
+            <label for="slack_radio">SLACK</label>
+        </div>
+        <div class="contents" id="main_contents">たぶ１の内容</div>
+        <div class="contents hidden" id="memo_contents">たぶ２の内容</div>
+        <div class="contents hidden" id="task_contents">たぶ３の内容</div>
+        <div class="contents hidden" id="slack_contents">たぶ４の内容</div>
+    </main>
+    <linkarea>
+        <span>リンク集</span>
+        <table>
+			<tr><th class="width70"/><th class="width15"/><th class="width15"/></tr>
+            <tr th:each="list : ${links}" th:object="${list}">
+                <td><a class="link" th:href="*{url}" th:text="*{title}"></a></td>
+                <td><img src="/img/pen.png"></td>
+                <td><img src="/img/dustbox.png"></td>
+            </tr>
+        </table>
+    </linkarea>
+    <footer>
+        <span>フッター</span>
+    </footer>
+</body>
+</html>
