@@ -19,58 +19,56 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
 
-
 @Data
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name="task")
+@Table(name = "task")
 public class Task {
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.UUID)
+	@GeneratedValue(strategy = GenerationType.UUID)
 	@Column
 	private UUID uid;
-	
+
 	@Column
 	private String tagCd;
-	
+
 	@Column
 	private String classCd;
 
 	@Column
 	private String statusCd;
-	
+
 	@Column
 	private String title;
-	
+
 	@Column
 	private String titleShort;
-	
+
 	@Column
 	private String details;
-	
+
 	@Column
 	private Date plannedStartDate;
-	
+
 	@Column
 	private Date plannedEndDate;
-	
+
 	@Column
 	private Date startDate;
-	
+
 	@Column
 	private Date endDate;
-	
+
 	@Column(updatable = false)
 	@CreatedDate
 	private Timestamp createTime;
-	
+
 	@Column
 	@LastModifiedDate
 	private Timestamp updateTime;
-	
+
 	@OneToMany
 	private List<Process> processes;
-	
-	
+
 }

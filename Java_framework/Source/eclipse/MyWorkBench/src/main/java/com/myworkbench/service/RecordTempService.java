@@ -7,7 +7,7 @@ import com.myworkbench.repository.RecordTempRepository;
 
 @Service
 public class RecordTempService {
-	
+
 	@Autowired
 	RecordTempRepository repository;
 

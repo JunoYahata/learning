@@ -7,7 +7,7 @@ import com.myworkbench.repository.SlackRepository;
 
 @Service
 public class SlackService {
-	
+
 	@Autowired
 	SlackRepository repository;
 

@@ -11,20 +11,20 @@ import com.myworkbench.repository.LinkRepository;
 
 @Service
 public class LinkService {
-	
+
 	@Autowired
 	LinkRepository repository;
-	
-	public List<Link> findAll(){
+
+	public List<Link> findAll() {
 		return repository.findAll();
 	}
-	
-	public Link findByUId(UUID uid){
+
+	public Link findByUId(UUID uid) {
 		return repository.findById(uid).orElseThrow();
 	}
-	
+
 	public boolean insert(Link link) {
-		return repository.save(link)!=null;
+		return repository.save(link) != null;
 	}
 
 }

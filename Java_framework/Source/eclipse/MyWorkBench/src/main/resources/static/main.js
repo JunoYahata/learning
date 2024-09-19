@@ -3,7 +3,7 @@
 
 
 
-const SUCCESS_MESSAGE = "成功しました<br>3秒後に自動で閉じます";
+const SUCCESS_MESSAGE = "";
 
 /**
  * リクエストされたURL
@@ -54,14 +54,13 @@ function delayDialogClose(time) {
 function dialogClose() {
 	document.querySelector('.dialog').close();
 	location.reload()
-	
+
 }
 
 window.addEventListener('message', e => {
 	console.log(e.data);
 	if (e.data == "success") {
 		document.querySelector('.dialog').removeChild(document.querySelector('.frame'));
-		document.querySelector('#dialog_message').value = SUCCESS_MESSAGE;
 		document.querySelector('#dialog_message').classList.remove('hidden');
 		delayDialogClose(3000);
 	}

@@ -10,24 +10,23 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
 
-
 @Data
 @Entity
-@Table(name="cd")
+@Table(name = "cd")
 public class Cd {
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.UUID)
+	@GeneratedValue(strategy = GenerationType.UUID)
 	@Column
 	private UUID uid;
-	
+
 	@Column
 	private String category;
-	
+
 	@Column
 	private String name;
-	
+
 	@Column
 	private String cd;
-	
+
 }

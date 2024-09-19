@@ -11,25 +11,23 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
 
-
 @Data
 @Entity
-@Table(name="record_temp")
+@Table(name = "record_temp")
 public class RecordTemp {
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.UUID)
+	@GeneratedValue(strategy = GenerationType.UUID)
 	@Column
 	private UUID uid;
-	
+
 	@Column
 	private UUID taskUid;
-	
+
 	@Column
 	private UUID processUid;
-	
+
 	@Column
 	private Timestamp startTime;
-	
-	
+
 }

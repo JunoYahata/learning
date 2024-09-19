@@ -11,17 +11,17 @@ import com.myworkbench.repository.CdRepository;
 
 @Service
 public class CdService {
-	
+
 	@Autowired
 	CdRepository repository;
-	
-	public List<Cd> findByCategory(String category){
-		
+
+	public List<Cd> findByCategory(String category) {
+
 		Cd cd = new Cd();
 		cd.setCategory(category);
-		
+
 		return repository.findAll((Example.of(cd)));
-		
+
 	}
 
 }

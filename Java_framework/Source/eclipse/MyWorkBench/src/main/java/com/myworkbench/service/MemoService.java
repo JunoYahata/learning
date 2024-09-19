@@ -7,7 +7,7 @@ import com.myworkbench.repository.MemoRepository;
 
 @Service
 public class MemoService {
-	
+
 	@Autowired
 	MemoRepository repository;
 

@@ -12,17 +12,17 @@ import com.myworkbench.repository.TaskRepository;
 
 @Service
 public class TaskService {
-	
+
 	@Autowired
 	TaskRepository taskRepository;
-	
+
 	@Autowired
 	ProcessRepository processRepository;
-	
+
 	@Autowired
 	RecordRepository recordRepository;
-	
-	public List<Task> FindAllTaskOnly(){
+
+	public List<Task> FindAllTaskOnly() {
 		return taskRepository.findAll();
 	}
 	/*

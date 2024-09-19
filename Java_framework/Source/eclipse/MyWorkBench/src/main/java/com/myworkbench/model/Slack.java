@@ -16,37 +16,35 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
 
-
 @Data
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name="slack")
+@Table(name = "slack")
 public class Slack {
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.UUID)
+	@GeneratedValue(strategy = GenerationType.UUID)
 	@Column
 	private UUID uid;
-	
+
 	@Column
 	private String slackCd;
-	
+
 	@Column
 	private String title;
-	
+
 	@Column
 	private String message;
-	
+
 	@Column
 	private String statusEmoji;
-	
+
 	@Column(updatable = false)
 	@CreatedDate
 	private Timestamp createTime;
-	
+
 	@Column
 	@LastModifiedDate
 	private Timestamp updateTime;
-	
-	
+
 }

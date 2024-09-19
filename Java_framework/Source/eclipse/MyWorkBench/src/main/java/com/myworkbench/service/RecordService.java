@@ -12,17 +12,17 @@ import com.myworkbench.repository.RecordRepository;
 
 @Service
 public class RecordService {
-	
+
 	@Autowired
 	RecordRepository repository;
-	
-	public List<Record> FindAllByPaUid(UUID uuid){
-		
+
+	public List<Record> FindAllByPaUid(UUID uuid) {
+
 		// 検索用エンティティ
 		Record recordProbe = new Record();
 		recordProbe.setPaUid(uuid);
-		
-		return  repository.findAll(Example.of(recordProbe));
+
+		return repository.findAll(Example.of(recordProbe));
 	}
 
 }

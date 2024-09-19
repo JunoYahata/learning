@@ -12,21 +12,21 @@ import com.myworkbench.repository.ProcessRepository;
 
 @Service
 public class ProcessService {
-	
+
 	@Autowired
 	ProcessRepository repository;
-	
-	public List<Process> FindAll(){
+
+	public List<Process> FindAll() {
 		return repository.findAll();
 	}
-	
-	public List<Process> FindAllByPaUid(UUID uuid){
-		
+
+	public List<Process> FindAllByPaUid(UUID uuid) {
+
 		// 検索用エンティティ
 		Process processProbe = new Process();
 		processProbe.setPaUid(uuid);
-		
-		return  repository.findAll(Example.of(processProbe));
+
+		return repository.findAll(Example.of(processProbe));
 	}
 
 }

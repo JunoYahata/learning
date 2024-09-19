@@ -16,35 +16,31 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
 
-
 @Data
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name="link")
+@Table(name = "link")
 public class Link {
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.UUID)
+	@GeneratedValue(strategy = GenerationType.UUID)
 	@Column
 	private UUID uid;
-	
+
 	@Column
 	private String tagCd;
-	
+
 	@Column
 	private String title;
-	
+
 	@Column
 	private String url;
-	
+
 	@Column(updatable = false)
 	@CreatedDate
 	private Timestamp createTime;
-	
+
 	@Column
 	@LastModifiedDate
 	private Timestamp updateTime;
 }
-
-
-

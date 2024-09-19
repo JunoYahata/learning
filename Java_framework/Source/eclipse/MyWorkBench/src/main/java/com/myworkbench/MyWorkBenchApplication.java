@@ -15,9 +15,9 @@ public class MyWorkBenchApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(MyWorkBenchApplication.class, args);
 	}
-	
+
 	@PostConstruct
-	public void init(){
+	public void init() {
 		TimeZone.setDefault(TimeZone.getTimeZone("JST"));
 	}
 

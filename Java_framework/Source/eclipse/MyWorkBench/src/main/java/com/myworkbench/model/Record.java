@@ -15,42 +15,40 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
-
 @Data
 @Entity
-@Table(name="record")
+@Table(name = "record")
 public class Record {
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.UUID)
+	@GeneratedValue(strategy = GenerationType.UUID)
 	@Column
 	private UUID uid;
-	
+
 	@Column
 	private Integer num;
-	
+
 	@Column
 	private Timestamp startTime;
-	
+
 	@Column
 	private Timestamp stopTime;
-	
+
 	@Column
 	private String memo;
-	
+
 	@Column(updatable = false)
 	@CreatedDate
 	private Timestamp createTime;
-	
+
 	@Column
 	@LastModifiedDate
 	private Timestamp updateTime;
-	
+
 	@Column
 	private UUID paUid;
-	
+
 	@ManyToOne
 	private Process process;
-	
-	
+
 }

@@ -1,117 +1,126 @@
 @charset "UTF-8";
 
 body {
-  display: grid;
-  margin: 0;
-  padding: 1vh;
-grid-template:
-    "A A" auto
-    "B C" 1fr
-    "D D" auto /
-     0.8fr 0.2fr;
-  min-height: 98vh;
+	display: grid;
+	margin: 0;
+	padding: 1vh;
+	grid-template:
+		"A A" auto
+		"B C" 1fr
+		"D D" auto /
+		0.8fr 0.2fr;
+	min-height: 98vh;
 }
 
 header {
-  grid-area: A;
-  background-color: darkgreen;
-  color: black;
-  font-size: 20px;
-  text-align: center;
-  padding: 15px;
-  
+	grid-area: A;
+	background-color: darkgreen;
+	color: black;
+	font-size: 20px;
+	text-align: center;
+	padding: 15px;
+
 }
+
 main {
-  grid-area: B;
-  background-color: black;
-  color: aliceblue;
-  padding: 15px;
-  height: 75vh;
-  overflow-y: scroll;
+	grid-area: B;
+	background-color: black;
+	color: aliceblue;
+	padding: 15px;
+	height: 75vh;
+	overflow-y: scroll;
 }
+
 linkarea {
-  grid-area: C;
-  background-color: azure;
-  color: black;
-  text-align: center;
-  padding: 15px;
-  height: 70vh;
-  overflow-y: scroll;
+	grid-area: C;
+	background-color: azure;
+	color: black;
+	text-align: center;
+	padding: 15px;
+	height: 70vh;
+	overflow-y: scroll;
 }
 
 footer {
-  grid-area: D;
-  background-color: darkgrey;
-  color: black;
-  text-align: right;
-  padding: 5px;
+	grid-area: D;
+	background-color: darkgrey;
+	color: black;
+	text-align: right;
+	padding: 5px;
 }
 
 
 .tab_selector {
-    text-align: center;
+	text-align: center;
 }
-.tab_selector label{
-    background-color:dimgray;
-    padding-inline: 40px;
-    padding-top: 10px;
-    font-size: 20px;
+
+.tab_selector label {
+	background-color: dimgray;
+	padding-inline: 40px;
+	padding-top: 10px;
+	font-size: 20px;
 }
-.tab_radio:checked + label{
-    background-color: aliceblue;
-    color: black;
+
+.tab_radio:checked+label {
+	background-color: aliceblue;
+	color: black;
 }
-.contents{
-    background-color: aliceblue;
-    color: black;
-    padding-top: 20px;
-    min-height: 60vh;
+
+.contents {
+	background-color: aliceblue;
+	color: black;
+	padding-top: 20px;
+	min-height: 60vh;
 }
 
 table {
-    table-layout: fixed;
-    width: 100%;
+	table-layout: fixed;
+	width: 100%;
 }
-    
+
 th.width70 {
-    width: 70%;
+	width: 70%;
 }
-    
+
 th.width15 {
-    width: 15%;
+	width: 15%;
 }
 
 td {
 	text-align: left;
 }
 
-form input.update_button{
+form input.update_button {
 	width: 26px;
 	height: 26px;
 	color: rgba(0, 0, 0, 0);
 	background-image: url(./img/pen.png);
 }
-form input.update_button:hover{
+
+form input.update_button:hover {
 	background-image: url(./img/pen_on.png);
 }
 
-form input.delete_button{
+form input.delete_button {
 	width: 26px;
 	height: 26px;
 	color: rgba(0, 0, 0, 0);
 	background-image: url(./img/dustbox.png);
 }
-form input.delete_button:hover{
+
+form input.delete_button:hover {
 	background-image: url(./img/dustbox_on.png);
 }
 
 dialog {
-	
+
 	width: 500px;
 	height: 500px;
 	overflow: hidden;
 	resize: none;
+
 }
+
 dialog iframe {
 	width: 100%;
 	height: 80%;

@@ -16,31 +16,30 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
 
-
 @Data
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name="memo")
+@Table(name = "memo")
 public class Memo {
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.UUID)
+	@GeneratedValue(strategy = GenerationType.UUID)
 	@Column
 	private UUID uid;
-	
+
 	@Column
 	private String tagCd;
-	
+
 	@Column
 	private String title;
-	
+
 	@Column
 	private String details;
-	
+
 	@Column(updatable = false)
 	@CreatedDate
 	private Timestamp createTime;
-	
+
 	@Column
 	@LastModifiedDate
 	private Timestamp updateTime;
