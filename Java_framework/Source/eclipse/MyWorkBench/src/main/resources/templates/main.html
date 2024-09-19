@@ -29,15 +29,33 @@
         <div class="contents hidden" id="slack_contents">たぶ４の内容</div>
     </main>
     <linkarea>
+		<dialog class="dialog" >
+			<p class="hidden" id="dialog_message"></p>
+			<iframe class="frame"></iframe>
+			<form method="dialog">
+				<input type="submit" value="キャンセル">
+			</form>
+		</dialog>
         <span>リンク集</span>
         <table>
 			<tr><th class="width70"/><th class="width15"/><th class="width15"/></tr>
             <tr th:each="list : ${links}" th:object="${list}">
                 <td><a class="link" th:href="*{url}" th:text="*{title}"></a></td>
-                <td><img src="/img/pen.png"></td>
-                <td><img src="/img/dustbox.png"></td>
+                <td><form method="post" action="link/update-action">
+					<input type="button" name="updateId" class="update_button" th:data-uid="*{uid}">
+				</form></td>
+                <td><form method="post" action="delete">
+					<input type="text" name="deleteId" class="hidden" th:value="*{uid}">
+					<input type="submit" class="delete_button">
+				</form></td>
             </tr>
         </table>
+		<form method="post">
+			<input type="text" name="tagCd">
+			<input type="text" name="title">
+			<input type="text" name="url">
+			<input type="submit">
+		</form>
     </linkarea>
     <footer>
         <span>フッター</span>

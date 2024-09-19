@@ -1,6 +1,7 @@
 package com.myworkbench.model;
 
 import java.sql.Timestamp;
+import java.util.UUID;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -23,9 +24,9 @@ import lombok.Data;
 public class Memo {
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.UUID)
 	@Column
-	private Long id;
+	private UUID uid;
 	
 	@Column
 	private String tagCd;

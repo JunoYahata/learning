@@ -1,6 +1,8 @@
 package com.myworkbench.model;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.annotation.CreatedDate;
@@ -13,6 +15,8 @@ import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -24,9 +28,9 @@ import lombok.Data;
 public class Process {
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.UUID)
 	@Column
-	private Long id;
+	private UUID uid;
 	
 	@Column
 	private Integer num;
@@ -51,14 +55,11 @@ public class Process {
 	@Column
 	private UUID paUid;
 	
-
-	@Column
-	private UUID uid;
+	@ManyToOne
+	private Task task;
 	
-	
-	//private Task task;
-	
-	//private List<Record> reords = new ArrayList<>();
+	@OneToMany
+	private List<Record> reords = new ArrayList<>();
 	
 	
 }

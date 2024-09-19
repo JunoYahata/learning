@@ -2,6 +2,7 @@ package com.myworkbench.model;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.annotation.CreatedDate;
@@ -14,6 +15,7 @@ import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -25,9 +27,9 @@ import lombok.Data;
 public class Task {
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.UUID)
 	@Column
-	private Long id;
+	private UUID uid;
 	
 	@Column
 	private String tagCd;
@@ -67,10 +69,8 @@ public class Task {
 	@LastModifiedDate
 	private Timestamp updateTime;
 	
-	@Column
-	private UUID uid;
-	
-	//private List<Process> processes;
+	@OneToMany
+	private List<Process> processes;
 	
 	
 }

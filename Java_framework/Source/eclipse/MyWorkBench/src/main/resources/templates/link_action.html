@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>リンク操作画面</title>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="../../common.css" />
+	<link rel="stylesheet" href="../link_action.css" />
+	<script defer src="../link_action.js"></script>
+</head>
+
+<body>
+
+	<span th:text="'リンク'+${action_jp}"></span>
+	<p class="result"></p>
+	<form method="post" th:action="'/link/'+${action}+'/result'" id="form">
+
+		<input type="text" name="uid" class="hidden" th:value="${link.uid}">
+		<p>タイトル：
+			<input type="text" name="title" th:value="${link.title}">
+		</p>
+		<p>タグ：
+			<select name="tagCd">
+				<th:block th:each="list : ${tags}" th:object="${list}">
+					<th:block th:if="${link.tagCd} == *{cd}">
+						<option th:label="*{name}" th:value="*{cd}" selected />
+					</th:block>
+					<th:block th:if="${link.tagCd} != *{cd}">
+						<option th:label="*{name}" th:value="*{cd}" />
+					</th:block>
+				</th:block>
+			</select>
+		</p>
+		<p>URL：
+			<input type="text" name="url" th:value="${link.url}">
+		</p>
+		<input type="submit">
+	</form>
+
+
+</body>
+
+</html>

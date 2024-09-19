@@ -11,6 +11,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -21,9 +22,9 @@ import lombok.Data;
 public class Record {
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.UUID)
 	@Column
-	private Long id;
+	private UUID uid;
 	
 	@Column
 	private Integer num;
@@ -48,7 +49,8 @@ public class Record {
 	@Column
 	private UUID paUid;
 	
-	//private Process process;
+	@ManyToOne
+	private Process process;
 	
 	
 }

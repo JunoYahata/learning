@@ -19,12 +19,15 @@ header {
   font-size: 20px;
   text-align: center;
   padding: 15px;
+  
 }
 main {
   grid-area: B;
   background-color: black;
   color: aliceblue;
   padding: 15px;
+  height: 75vh;
+  overflow-y: scroll;
 }
 linkarea {
   grid-area: C;
@@ -32,6 +35,8 @@ linkarea {
   color: black;
   text-align: center;
   padding: 15px;
+  height: 70vh;
+  overflow-y: scroll;
 }
 
 footer {
@@ -60,7 +65,7 @@ footer {
     background-color: aliceblue;
     color: black;
     padding-top: 20px;
-    min-height: 90%;
+    min-height: 60vh;
 }
 
 table {
@@ -80,9 +85,35 @@ td {
 	text-align: left;
 }
 
+form input.update_button{
+	width: 26px;
+	height: 26px;
+	color: rgba(0, 0, 0, 0);
+	background-image: url(./img/pen.png);
+}
+form input.update_button:hover{
+	background-image: url(./img/pen_on.png);
+}
 
+form input.delete_button{
+	width: 26px;
+	height: 26px;
+	color: rgba(0, 0, 0, 0);
+	background-image: url(./img/dustbox.png);
+}
+form input.delete_button:hover{
+	background-image: url(./img/dustbox_on.png);
+}
 
-
-
-
-
+dialog {
+	
+	width: 500px;
+	height: 500px;
+	overflow: hidden;
+	resize: none;
+}
+dialog iframe {
+	width: 100%;
+	height: 80%;
+	border: none;
+}

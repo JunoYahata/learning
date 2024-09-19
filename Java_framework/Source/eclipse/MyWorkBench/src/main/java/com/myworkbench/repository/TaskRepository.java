@@ -1,9 +1,11 @@
 package com.myworkbench.repository;
 
+import java.util.UUID;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.myworkbench.model.Task;
 
-public interface TaskRepository extends JpaRepository<Task, Integer> {
+public interface TaskRepository extends JpaRepository<Task, UUID> {
 
 }
