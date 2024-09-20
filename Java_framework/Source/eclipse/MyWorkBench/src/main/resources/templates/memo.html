@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>MEMO</title>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="http://localhost:8080/common.css" />
+	<link rel="stylesheet" href="http://localhost:8080/memo/memo.css" />
+	<script defer src="http://localhost:8080/memo/memo.js"></script>
+</head>
+
+<body>
+	<input type="button" value="新しいメモ" class="insert_button">
+
+	<th:block th:each="list : ${memos}" th:object="${list}">
+		<div class="memo">
+			<div class="memo_title">
+				<span th:text="'['+*{tagCdName}+']'"></span>
+				<span th:text="*{title}"></span>
+				<input type="button" class="update_button" th:data-uid="*{uid}">
+				<input type="button" class="delete_button" th:data-uid="*{uid}">
+			</div>
+			<div class="memo_body hidden" th:id="'mb_'+*{uid}">
+				<span th:text="*{details}"></span>
+				<p th:text="'作成：'+*{createTimeStr}+', 更新：'+*{updateTimeStr}"></p>
+			</div>
+			<div class="memo_ol">
+				<input type="button" th:id="'db_'+*{uid}" class="memo_outline" th:data-id="*{uid}" value="▽">
+				<input type="button" th:id="'ub_'+*{uid}" class="memo_outline hidden" th:data-id="*{uid}" value="△">
+			</div>
+		</div>
+	</th:block>
+</body>
+
+</html>

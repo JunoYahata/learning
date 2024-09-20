@@ -1,10 +1,3 @@
-
-
-
-
-
-const SUCCESS_MESSAGE = "";
-
 /**
  * リクエストされたURL
  */
@@ -35,6 +28,11 @@ if (Boolean(tab)) {
 	document.querySelector('#' + tab + '_radio').checked = true;
 }
 
+
+
+
+
+
 /**
  * リンク操作画面のダイアログ作成
  */
@@ -46,27 +44,47 @@ document.querySelectorAll('.update_button').forEach((tab) => {
 	});
 });
 
+document.querySelector('.insert_button').addEventListener('click', () => {
+	document.querySelector('.frame').src = "link/insert-action";
+	document.querySelector('.dialog').showModal();
+});
+
+
+document.querySelectorAll('.delete_button').forEach((tab) => {
+	tab.addEventListener('click', (e) => {
+		document.querySelector('.frame').src = "link/delete-action/" + e.target.dataset.uid;
+		document.querySelector('.dialog').showModal();
+	});
+});
 
 function delayDialogClose(time) {
 	setTimeout("dialogClose()", time);
 }
 
 function dialogClose() {
+	var currentTab = '';
+	document.querySelectorAll('.tab_radio').forEach((tab) => {
+		if (tab.checked) {
+			console.log(tab.id);
+			currentTab = tab.id.replace('_radio', '');
+		}
+	});
 	document.querySelector('.dialog').close();
-	location.reload()
+	window.location.href = 'http://localhost:8080/?tab=' + currentTab;
 
 }
 
 window.addEventListener('message', e => {
-	console.log(e.data);
 	if (e.data == "success") {
 		document.querySelector('.dialog').removeChild(document.querySelector('.frame'));
 		document.querySelector('#dialog_message').classList.remove('hidden');
-		delayDialogClose(3000);
+		delayDialogClose(2000);
+	}else if (e.data == "failure") {
+		// 何もしない
+	}else {
+		document.querySelector('.frame').src = e.data;
+		document.querySelector('.dialog').showModal();
 	}
-
-	console.log(e.data);
-
 });
 
 

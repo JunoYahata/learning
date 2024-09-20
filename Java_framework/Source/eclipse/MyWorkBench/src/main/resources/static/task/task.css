@@ -1,0 +1,58 @@
+@charset "UTF-8";
+
+body {
+	grid-area: B;
+	background-color: black;
+	color: aliceblue;
+	padding: 15px;
+	height: 75vh;
+	overflow-y: scroll;
+}
+
+insert_button {
+	padding: 10px;
+}
+
+input.update_button {
+	width: 26px;
+	height: 26px;
+	color: rgba(0, 0, 0, 0);
+	background-image: url(../img/pen.png);
+}
+
+input.update_button:hover {
+	background-image: url(../img/pen_on.png);
+}
+
+input.delete_button {
+	width: 26px;
+	height: 26px;
+	color: rgba(0, 0, 0, 0);
+	background-image: url(../img/dustbox.png);
+}
+
+input.delete_button:hover {
+	background-image: url(../img/dustbox_on.png);
+}
+
+dialog {
+	width: 450px;
+	height: 600px;
+	overflow: hidden;
+
+}
+
+div div {
+	border: 1px solid rgb(255, 255, 255);
+	width: 99%;
+}
+
+.memo {
+	padding: 5px;
+}
+.memo_ol {
+	text-align: center;
+}
+.memo_outline {
+	width: 100%;
+}

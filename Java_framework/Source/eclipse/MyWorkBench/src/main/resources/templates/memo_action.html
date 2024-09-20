@@ -2,25 +2,25 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<title>リンク操作画面</title>
+	<title>メモ操作画面</title>
 	<meta charset="utf-8" />
 	<link rel="stylesheet" href="http://localhost:8080/common.css" />
-	<link rel="stylesheet" href="http://localhost:8080/link/link_action.css" />
-	<script defer src="http://localhost:8080/link/link_action.js"></script>
+	<link rel="stylesheet" href="http://localhost:8080/memo/memo_action.css" />
+	<script defer src="http://localhost:8080/memo/memo_action.js"></script>
 </head>
 
 <body>
 
-	<span th:text="'リンク'+${action_jp}"></span>
+	<span th:text="'メモ'+${action_jp}"></span>
 	<p class="result"></p>
-	<form method="post" th:action="'/link/'+${action}+'/result'" id="form">
+	<form method="post" th:action="'/memo/'+${action}+'/result'" id="form">
 
-		<input type="text" name="uid" class="hidden" th:value="${link.uid}">
+		<input type="text" name="uid" class="hidden" th:value="${memo.uid}">
 		<table>
 			<tr>
 				<td>タイトル：</td>
 				<td>
-					<input type="text" class="entry_field" name="title" th:value="${link.title}">
+					<input type="text" class="entry_field" name="title" th:value="${memo.title}">
 				</td>
 			</tr>
 			<tr>
@@ -28,10 +28,10 @@
 				<td>
 					<select name="tagCd" class="entry_field">
 						<th:block th:each="list : ${tags}" th:object="${list}">
-							<th:block th:if="${link.tagCd} == *{cd}">
+							<th:block th:if="${memo.tagCd} == *{cd}">
 								<option th:label="*{name}" th:value="*{cd}" selected />
 							</th:block>
-							<th:block th:if="${link.tagCd} != *{cd}">
+							<th:block th:if="${memo.tagCd} != *{cd}">
 								<option th:label="*{name}" th:value="*{cd}" />
 							</th:block>
 						</th:block>
@@ -39,9 +39,9 @@
 				</td>
 			</tr>
 			<tr>
-				<td>URL：</td>
+				<td>内容：</td>
 				<td>
-					<input type="text" class="entry_field" name="url" th:value="${link.url}">
+					<textarea cols="60" rows="15" class="big entry_field" name="details" th:text="${memo.details}"></textarea>
 				</td>
 			</tr>
 		</table>

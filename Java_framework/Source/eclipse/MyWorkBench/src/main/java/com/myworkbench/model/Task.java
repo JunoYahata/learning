@@ -17,6 +17,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.Data;
 
 @Data
@@ -67,7 +68,17 @@ public class Task {
 	@Column
 	@LastModifiedDate
 	private Timestamp updateTime;
+	
+	@Transient
+	private String tagCdName;
 
+	@Transient
+	private String classCdName;
+
+	@Transient
+	private String statusCdName;
+
+	@Transient
 	@OneToMany
 	private List<Process> processes;
 

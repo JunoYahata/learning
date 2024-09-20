@@ -13,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.Data;
 
 @Data
@@ -48,6 +49,7 @@ public class Record {
 	@Column
 	private UUID paUid;
 
+	@Transient
 	@ManyToOne
 	private Process process;
 

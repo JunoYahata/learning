@@ -4,9 +4,9 @@
 <head>
 	<title>作業用WEBサイト（作成中）</title>
 	<meta charset="utf-8" />
-	<link rel="stylesheet" href="common.css" />
-	<link rel="stylesheet" href="main.css" />
-	<script defer src="main.js"></script>
+	<link rel="stylesheet" href="http://localhost:8080/common.css" />
+	<link rel="stylesheet" href="http://localhost:8080/main.css" />
+	<script defer src="http://localhost:8080/main.js"></script>
 </head>
 
 <body>
@@ -14,7 +14,6 @@
 		<span>作業用ホームページ</span>
 	</header>
 	<main>
-		<span>メイン</span>
 		<div class="tab_selector">
 			<input type="radio" name="tab_selector" class="tab_radio hidden" id="main_radio"
 				data-contents="#main_contents" checked>
@@ -30,16 +29,20 @@
 			<label for="slack_radio">SLACK</label>
 		</div>
 		<div class="contents" id="main_contents">たぶ１の内容</div>
-		<div class="contents hidden" id="memo_contents">たぶ２の内容</div>
-		<div class="contents hidden" id="task_contents">たぶ３の内容</div>
+		<div class="contents hidden" id="memo_contents">
+			<iframe src="memo/"></iframe>
+		</div>
+		<div class="contents hidden" id="task_contents">
+			<iframe src="task/"></iframe>
+		</div>
 		<div class="contents hidden" id="slack_contents">たぶ４の内容</div>
 	</main>
 	<linkarea>
 		<dialog class="dialog">
-			<p class="hidden" id="dialog_message">成功しました<br>3秒後に自動で閉じます</p>
+			<p class="hidden" id="dialog_message">成功しました<br>2秒後に自動で閉じます</p>
 			<iframe class="frame"></iframe>
 			<form method="dialog">
-				<input type="submit" value="キャンセル">
+				<input type="submit" value="閉じる">
 			</form>
 		</dialog>
 		<span>リンク集</span>
@@ -52,24 +55,14 @@
 			<tr th:each="list : ${links}" th:object="${list}">
 				<td><a class="link" th:href="*{url}" th:text="*{title}"></a></td>
 				<td>
-					<form method="post" action="link/update-action">
-						<input type="button" name="updateId" class="update_button" th:data-uid="*{uid}">
-					</form>
+					<input type="button" class="update_button" th:data-uid="*{uid}">
 				</td>
 				<td>
-					<form method="post" action="delete">
-						<input type="text" name="deleteId" class="hidden" th:value="*{uid}">
-						<input type="submit" class="delete_button">
-					</form>
+					<input type="button" class="delete_button" th:data-uid="*{uid}">
 				</td>
 			</tr>
 		</table>
-		<form method="post">
-			<input type="text" name="tagCd">
-			<input type="text" name="title">
-			<input type="text" name="url">
-			<input type="submit">
-		</form>
+		<input type="button" class="insert_button" value="+">
 	</linkarea>
 	<footer>
 		<span>フッター</span>

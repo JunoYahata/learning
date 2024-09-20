@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>メモ操作画面</title>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="http://localhost:8080/common.css" />
+	<link rel="stylesheet" href="http://localhost:8080/task/task_action.css" />
+	<script defer src="http://localhost:8080/task/task_action.js"></script>
+</head>
+
+<body>
+
+	<span th:text="'タスク'+${action_jp}"></span>
+	<p class="result"></p>
+	<form method="post" th:action="'/task/'+${action}+'/result'" id="form">
+
+		<input type="text" name="uid" class="hidden" th:value="${taskCreate.uid}">
+		<table>
+			<tr>
+				<td>タイトル：</td>
+				<td>
+					<input type="text" class="entry_field" name="title" th:value="${taskCreate.title}">
+				</td>
+			</tr>
+			<tr>
+				<td>短縮名：</td>
+				<td>
+					<input type="text" class="entry_field" name="title_short" th:value="${taskCreate.titleShort}">
+				</td>
+			</tr>
+			<tr>
+				<td>タグ：</td>
+				<td>
+					<select name="tagCd" class="entry_field">
+						<th:block th:each="list : ${tags}" th:object="${list}">
+							<th:block th:if="${taskCreate.tagCd} == *{cd}">
+								<option th:label="*{name}" th:value="*{cd}" selected />
+							</th:block>
+							<th:block th:if="${taskCreate.tagCd} != *{cd}">
+								<option th:label="*{name}" th:value="*{cd}" />
+							</th:block>
+						</th:block>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>クラス：</td>
+				<td>
+					<select name="tagCd" class="entry_field">
+						<th:block th:each="list : ${classes}" th:object="${list}">
+							<th:block th:if="${taskCreate.classCd} == *{cd}">
+								<option th:label="*{name}" th:value="*{cd}" selected />
+							</th:block>
+							<th:block th:if="${taskCreate.classCd} != *{cd}">
+								<option th:label="*{name}" th:value="*{cd}" />
+							</th:block>
+						</th:block>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>概要：</td>
+				<td>
+					<textarea cols="60" rows="15" class="big entry_field" name="details"
+						th:text="${taskCreate.details}"></textarea>
+				</td>
+			</tr>
+			<tr>
+				<td>開始予定日：</td>
+				<td>
+					<input type="text" class="entry_field" name="title_short" th:value="${taskCreate.plannedStartDate}">
+				</td>
+			</tr>
+			<tr>
+				<td>完了予定日：</td>
+				<td>
+					<input type="text" class="entry_field" name="title_short" th:value="${taskCreate.plannedEndDate}">
+				</td>
+			</tr>
+			<tr>
+				<td>開始日：</td>
+				<td>
+					<input type="text" class="entry_field" name="title_short" th:value="${taskCreate.startDate}">
+				</td>
+			</tr>
+			<tr>
+				<td>完了日：</td>
+				<td>
+					<input type="text" class="entry_field" name="title_short" th:value="${taskCreate.endDate}">
+				</td>
+			</tr>
+		</table>
+
+		<table>
+			<tr>
+				<td><input type="text" th:value="${taskCreate.processuId[0]}"></td>
+				<td><input type="text" th:value="${taskCreate.num[0]}"></td>
+				<td><input type="text" th:value="${taskCreate.processTitle[0]}"></td>
+				<td><input type="text" th:value="${taskCreate.link[0]}"></td>
+			</tr>
+			<tr>
+				<td><input type="text" th:value="${taskCreate.processuId[1]}"></td>
+				<td><input type="text" th:value="${taskCreate.num[1]}"></td>
+				<td><input type="text" th:value="${taskCreate.processTitle[1]}"></td>
+				<td><input type="text" th:value="${taskCreate.link[1]}"></td>
+			</tr>
+			<tr>
+				<td><input type="text" th:value="${taskCreate.processuId[2]}"></td>
+				<td><input type="text" th:value="${taskCreate.num[2]}"></td>
+				<td><input type="text" th:value="${taskCreate.processTitle[2]}"></td>
+				<td><input type="text" th:value="${taskCreate.link[2]}"></td>
+			</tr>
+			<tr>
+				<td><input type="text" th:value="${taskCreate.processuId[3]}"></td>
+				<td><input type="text" th:value="${taskCreate.num[3]}"></td>
+				<td><input type="text" th:value="${taskCreate.processTitle[3]}"></td>
+				<td><input type="text" th:value="${taskCreate.link[3]}"></td>
+			</tr>
+			<tr>
+				<td><input type="text" th:value="${taskCreate.processuId[4]}"></td>
+				<td><input type="text" th:value="${taskCreate.num[4]}"></td>
+				<td><input type="text" th:value="${taskCreate.processTitle[4]}"></td>
+				<td><input type="text" th:value="${taskCreate.link[4]}"></td>
+			</tr>
+			<tr>
+				<td><input type="text" th:value="${taskCreate.processuId[5]}"></td>
+				<td><input type="text" th:value="${taskCreate.num[5]}"></td>
+				<td><input type="text" th:value="${taskCreate.processTitle[5]}"></td>
+				<td><input type="text" th:value="${taskCreate.link[5]}"></td>
+			</tr>
+			<tr>
+				<td><input type="text" th:value="${taskCreate.processuId[6]}"></td>
+				<td><input type="text" th:value="${taskCreate.num[6]}"></td>
+				<td><input type="text" th:value="${taskCreate.processTitle[6]}"></td>
+				<td><input type="text" th:value="${taskCreate.link[6]}"></td>
+			</tr>
+			<tr>
+				<td><input type="text" th:value="${taskCreate.processuId[7]}"></td>
+				<td><input type="text" th:value="${taskCreate.num[7]}"></td>
+				<td><input type="text" th:value="${taskCreate.processTitle[7]}"></td>
+				<td><input type="text" th:value="${taskCreate.link[7]}"></td>
+			</tr>
+			<tr>
+				<td><input type="text" th:value="${taskCreate.processuId[8]}"></td>
+				<td><input type="text" th:value="${taskCreate.num[8]}"></td>
+				<td><input type="text" th:value="${taskCreate.processTitle[8]}"></td>
+				<td><input type="text" th:value="${taskCreate.link[8]}"></td>
+			</tr>
+			<tr>
+				<td><input type="text" th:value="${taskCreate.processuId[9]}"></td>
+				<td><input type="text" th:value="${taskCreate.num[9]}"></td>
+				<td><input type="text" th:value="${taskCreate.processTitle[9]}"></td>
+				<td><input type="text" th:value="${taskCreate.link[9]}"></td>
+			</tr>
+			<tr>
+				<td><input type="text" th:value="${taskCreate.processuId[10]}"></td>
+				<td><input type="text" th:value="${taskCreate.num[10]}"></td>
+				<td><input type="text" th:value="${taskCreate.processTitle[10]}"></td>
+				<td><input type="text" th:value="${taskCreate.link[10]}"></td>
+			</tr>
+			<tr>
+				<td><input type="text" th:value="${taskCreate.processuId[11]}"></td>
+				<td><input type="text" th:value="${taskCreate.num[11]}"></td>
+				<td><input type="text" th:value="${taskCreate.processTitle[11]}"></td>
+				<td><input type="text" th:value="${taskCreate.link[11]}"></td>
+			</tr>
+			<tr>
+				<td><input type="text" th:value="${taskCreate.processuId[12]}"></td>
+				<td><input type="text" th:value="${taskCreate.num[12]}"></td>
+				<td><input type="text" th:value="${taskCreate.processTitle[12]}"></td>
+				<td><input type="text" th:value="${taskCreate.link[12]}"></td>
+			</tr>
+			<tr>
+				<td><input type="text" th:value="${taskCreate.processuId[13]}"></td>
+				<td><input type="text" th:value="${taskCreate.num[13]}"></td>
+				<td><input type="text" th:value="${taskCreate.processTitle[13]}"></td>
+				<td><input type="text" th:value="${taskCreate.link[13]}"></td>
+			</tr>
+			<tr>
+				<td><input type="text" th:value="${taskCreate.processuId[14]}"></td>
+				<td><input type="text" th:value="${taskCreate.num[14]}"></td>
+				<td><input type="text" th:value="${taskCreate.processTitle[14]}"></td>
+				<td><input type="text" th:value="${taskCreate.link[14]}"></td>
+			</tr>
+			<tr>
+				<td><input type="text" th:value="${taskCreate.processuId[15]}"></td>
+				<td><input type="text" th:value="${taskCreate.num[15]}"></td>
+				<td><input type="text" th:value="${taskCreate.processTitle[15]}"></td>
+				<td><input type="text" th:value="${taskCreate.link[15]}"></td>
+			</tr>
+			<tr>
+				<td><input type="text" th:value="${taskCreate.processuId[16]}"></td>
+				<td><input type="text" th:value="${taskCreate.num[16]}"></td>
+				<td><input type="text" th:value="${taskCreate.processTitle[16]}"></td>
+				<td><input type="text" th:value="${taskCreate.link[16]}"></td>
+			</tr>
+			<tr>
+				<td><input type="text" th:value="${taskCreate.processuId[17]}"></td>
+				<td><input type="text" th:value="${taskCreate.num[17]}"></td>
+				<td><input type="text" th:value="${taskCreate.processTitle[17]}"></td>
+				<td><input type="text" th:value="${taskCreate.link[17]}"></td>
+			</tr>
+			<tr>
+				<td><input type="text" th:value="${taskCreate.processuId[18]}"></td>
+				<td><input type="text" th:value="${taskCreate.num[18]}"></td>
+				<td><input type="text" th:value="${taskCreate.processTitle[18]}"></td>
+				<td><input type="text" th:value="${taskCreate.link[18]}"></td>
+			</tr>
+			<tr>
+				<td><input type="text" th:value="${taskCreate.processuId[19]}"></td>
+				<td><input type="text" th:value="${taskCreate.num[19]}"></td>
+				<td><input type="text" th:value="${taskCreate.processTitle[19]}"></td>
+				<td><input type="text" th:value="${taskCreate.link[19]}"></td>
+			</tr>
+		</table>
+		<input type="submit" th:value="${action_jp}">
+	</form>
+
+
+</body>
+
+</html>

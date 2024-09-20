@@ -23,8 +23,12 @@ public class LinkService {
 		return repository.findById(uid).orElseThrow();
 	}
 
-	public boolean insert(Link link) {
+	public boolean insertOrUpdate(Link link) {
 		return repository.save(link) != null;
+	}
+
+	public void delete(Link link) {
+		repository.delete(link);
 	}
 
 }

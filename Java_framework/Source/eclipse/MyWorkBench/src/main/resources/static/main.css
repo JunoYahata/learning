@@ -18,16 +18,16 @@ header {
 	color: black;
 	font-size: 20px;
 	text-align: center;
-	padding: 15px;
+	min-height: 5vh;
 
 }
 
 main {
 	grid-area: B;
-	background-color: black;
-	color: aliceblue;
+	background-color: rgb(192, 192, 192);
+	color: rgb(64, 0, 64);
 	padding: 15px;
-	height: 75vh;
+	height: 85vh;
 	overflow-y: scroll;
 }
 
@@ -37,7 +37,7 @@ linkarea {
 	color: black;
 	text-align: center;
 	padding: 15px;
-	height: 70vh;
+	height: 85vh;
 	overflow-y: scroll;
 }
 
@@ -46,7 +46,7 @@ footer {
 	background-color: darkgrey;
 	color: black;
 	text-align: right;
-	padding: 5px;
+	height: 3vh;
 }
 
 
@@ -70,7 +70,7 @@ footer {
 	background-color: aliceblue;
 	color: black;
 	padding-top: 20px;
-	min-height: 60vh;
+	min-height: 78vh;
 }
 
 table {
@@ -90,39 +90,61 @@ td {
 	text-align: left;
 }
 
-form input.update_button {
+input.update_button {
 	width: 26px;
 	height: 26px;
 	color: rgba(0, 0, 0, 0);
 	background-image: url(./img/pen.png);
 }
 
-form input.update_button:hover {
+input.update_button:hover {
 	background-image: url(./img/pen_on.png);
 }
 
-form input.delete_button {
+input.delete_button {
 	width: 26px;
 	height: 26px;
 	color: rgba(0, 0, 0, 0);
 	background-image: url(./img/dustbox.png);
 }
 
-form input.delete_button:hover {
+input.delete_button:hover {
 	background-image: url(./img/dustbox_on.png);
 }
 
-dialog {
+input.insert_button{
+	width: 100%;
+}
 
-	width: 500px;
-	height: 500px;
+dialog {
+	width: 70vw;
+	height: 70vh;
 	overflow: hidden;
-	resize: none;
 
 }
 
 dialog iframe {
 	width: 100%;
-	height: 80%;
+	height: 65vh;
+	scale: 1.5;
 	border: none;
+	position: relative;
+	top: 100px;
+}
+
+iframe+form input {
+	scale: 1.5;
+	width: 100%;
+
+	
+
+}
+
+.contents iframe {
+
+	width: 100%;
+	height: 75vh;
+	border: none;
+	padding: 0;
+	
 }

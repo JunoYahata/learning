@@ -18,6 +18,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.Data;
 
 @Data
@@ -54,9 +55,11 @@ public class Process {
 	@Column
 	private UUID paUid;
 
+	@Transient
 	@ManyToOne
 	private Task task;
 
+	@Transient
 	@OneToMany
 	private List<Record> reords = new ArrayList<>();
 
