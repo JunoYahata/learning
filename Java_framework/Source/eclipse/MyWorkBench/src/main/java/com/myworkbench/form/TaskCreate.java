@@ -1,39 +1,69 @@
 package com.myworkbench.form;
 
-import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
+
+import com.myworkbench.model.Process;
 
 import lombok.Data;
 
 @Data
-public class TaskCreate {
+public class TaskCreate extends com.myworkbench.model.Task {
 
-	private UUID uid;
-	
-	private String tagCd;
+	private final int PROCESS_NUM = 20;
+	private final String INIT_PROCESS_CODE = "0";
 
-	private String classCd;
+	private String[] processuId = new String[PROCESS_NUM];
 
-	private String title;
+	private Integer[] num = new Integer[PROCESS_NUM];
 
-	private String titleShort;
+	private String[] processTitle = new String[PROCESS_NUM];
 
-	private String details;
+	private String[] link = new String[PROCESS_NUM];
 
-	private Date plannedStartDate;
+	public void setProcessList() {
+		List<Process> tempProcess = new ArrayList<>();
 
-	private Date plannedEndDate;
+		for (int i = 0; i < PROCESS_NUM; i++) {
+			Process process = new Process();
+			if (processuId[i] != null && processuId[i].length() > 0) {
+				process.setUid(UUID.fromString(processuId[i]));
+			}
+			process.setProcessCd(INIT_PROCESS_CODE);
+			process.setNum(num[i]);
+			process.setTitle(processTitle[i]);
+			process.setLink(link[i]);
+			tempProcess.add(process);
 
-	private Date startDate;
+		}
+		super.setProcesses(tempProcess);
+	}
 
-	private Date endDate;
+	public void setProcessArray() {
+		int i = 0;
+		List<Process> tempProcess = super.getProcesses();
+		for (Process process : tempProcess) {
 
-	private String[] processuId = {"","","","","","","","","","","","","","","","","","","",""};
+			processuId[i] = process.getUid().toString();
+			num[i] = process.getNum();
+			processTitle[i] = process.getTitle();
+			link[i] = process.getLink();
+			i++;
+		}
 
-	private Integer[] num = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+	}
 
-	private String[] processTitle = {"","","","","","","","","","","","","","","","","","","",""};
+	public void setProcessArrayWithoutId() {
+		int i = 0;
+		List<Process> tempProcess = super.getProcesses();
+		for (Process process : tempProcess) {
+			num[i] = process.getNum();
+			processTitle[i] = process.getTitle();
+			link[i] = process.getLink();
+			i++;
+		}
 
-	private String[] link = {"","","","","","","","","","","","","","","","","","","",""};
+	}
 
 }

@@ -24,14 +24,36 @@ input.update_button:hover {
 	background-image: url(../img/pen_on.png);
 }
 
-input.delete_button {
+input.copy_button {
+	width: 26px;
+	height: 26px;
+	color: rgba(0, 0, 0, 0);
+	background-image: url(../img/copy.png);
+}
+
+input.copy_button:hover {
+	background-image: url(../img/copy_on.png);
+}
+
+input.record_update_button {
+	width: 26px;
+	height: 26px;
+	color: rgba(0, 0, 0, 0);
+	background-image: url(../img/pen.png);
+}
+
+input.record_update_button:hover {
+	background-image: url(../img/pen_on.png);
+}
+
+input.record_delete_button {
 	width: 26px;
 	height: 26px;
 	color: rgba(0, 0, 0, 0);
 	background-image: url(../img/dustbox.png);
 }
 
-input.delete_button:hover {
+input.record_delete_button:hover {
 	background-image: url(../img/dustbox_on.png);
 }
 
@@ -42,17 +64,40 @@ dialog {
 
 }
 
-div div {
+div.task_title {
+	border: 1px solid rgb(255, 255, 255);
+	width: 99%;
+	display: flex;
+}
+
+div.task_body {
 	border: 1px solid rgb(255, 255, 255);
 	width: 99%;
 }
 
-.memo {
+.task {
 	padding: 5px;
 }
-.memo_ol {
+
+.task_ol {
 	text-align: center;
 }
-.memo_outline {
-	width: 100%;
+
+.task_outline {
+	width: 98%;
+}
+
+
+label:has(input:checked)+p {
+	display: none;
+}
+
+label:has(input:checked)+div {
+	display: none;
+}
+
+div.process_1{
+	
+	display: flex;
+	
 }

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>作業記録操作画面</title>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="http://localhost:8080/common.css" />
+	<link rel="stylesheet" href="http://localhost:8080/record/record_action.css" />
+	<script defer src="http://localhost:8080/record/record_action.js"></script>
+</head>
+
+<body>
+
+	<span th:text="'作業記録'+${action_jp}"></span>
+	<p class="result"></p>
+	<form method="post" th:action="'/record/'+${action}+'/result'" id="form">
+
+		<input type="text" name="uid" class="hidden" th:value="${record.uid}">
+		<table>
+			<tr>
+				<td>タスク：</td>
+				<td>
+					<select name="gpaUid" class="entry_field">
+						<th:block th:each="task : ${tasks}">
+							<th:block th:if="${task.uid} == ${record.gpaUid}">
+								<option th:label="${task.title}" th:value="${task.uid}" selected />
+							</th:block>
+							<th:block th:if="${task.uid} != ${record.gpaUid}">
+								<option th:label="${task.title}" th:value="${task.uid}" />
+							</th:block>
+						</th:block>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>プロセス：</td>
+				<td>
+					<select name="paUid" id="process_selector" class="entry_field" th:data-pauid="${record.paUid}">
+						<th:block th:each="process : ${processes}">
+							<th:block th:if="${process.uid} == ${record.paUid}">
+								<option th:label="${process.title}" th:value="${process.uid}" selected />
+							</th:block>
+							<th:block th:if="${process.uid} != ${record.paUid}">
+								<option th:label="${process.title}" th:value="${process.uid}" />
+							</th:block>
+						</th:block>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>開始日時：</td>
+				<td>
+					<input type="text" class="entry_field" name="startTimeStr" th:value="${record.startTimeStr}">
+				</td>
+			</tr>
+			<tr>
+				<td>終了日時：</td>
+				<td>
+					<input type="text" class="entry_field" name="stopTimeStr" th:value="${record.stopTimeStr}">
+				</td>
+			</tr>
+			<tr>
+				<td>メモ：</td>
+				<td>
+					<textarea cols="60" rows="15" class="big entry_field" name="memo"
+						th:text="${record.memo}"></textarea>
+				</td>
+			</tr>
+		</table>
+		<input type="submit" th:value="${action_jp}">
+	</form>
+
+
+</body>
+
+</html>

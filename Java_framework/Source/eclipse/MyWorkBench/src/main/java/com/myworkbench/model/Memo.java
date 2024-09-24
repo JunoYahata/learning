@@ -44,12 +44,16 @@ public class Memo {
 	@Column
 	@LastModifiedDate
 	private Timestamp updateTime;
-	
-	
+
 	@Transient
 	private String tagCdName;
 	@Transient
 	private String createTimeStr;
 	@Transient
 	private String updateTimeStr;
+
+	public void setTimeStr() {
+		this.setCreateTimeStr(createTime.toString().substring(0, 16));
+		this.setUpdateTimeStr(updateTime.toString().substring(0, 16));
+	}
 }

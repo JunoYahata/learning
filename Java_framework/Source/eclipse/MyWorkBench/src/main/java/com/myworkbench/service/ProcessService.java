@@ -19,6 +19,10 @@ public class ProcessService {
 	public List<Process> FindAll() {
 		return repository.findAll();
 	}
+	
+	public Process findByUId(UUID uid) {
+		return repository.findById(uid).orElseThrow();
+	}
 
 	public List<Process> FindAllByPaUid(UUID uuid) {
 

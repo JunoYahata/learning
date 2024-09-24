@@ -19,7 +19,7 @@ import com.myworkbench.service.MemoService;
 @Controller
 @RequestMapping("/memo")
 public class MemoController {
-	
+
 	private final String TAG_CODE = "10";
 
 	@Autowired
@@ -39,7 +39,7 @@ public class MemoController {
 		mav.setViewName("memo");
 		return mav;
 	}
-	
+
 	/**
 	 * メモ登録の受付画面
 	 * @param model
@@ -48,7 +48,7 @@ public class MemoController {
 	@GetMapping("/insert-action")
 	public String insertAction(Model model) {
 		model.addAttribute("tags", cdService.findByCategory(TAG_CODE));
-		model.addAttribute(new Memo());
+		model.addAttribute("memo", new Memo());
 		model.addAttribute("action_jp", "登録");
 		model.addAttribute("action", "insert");
 		return "memo_action";
@@ -70,7 +70,7 @@ public class MemoController {
 			return "redirect:/memo/insert-action?result=failure";
 		}
 	}
-	
+
 	/**
 	 * メモ更新の受付画面
 	 * @param uid
@@ -80,7 +80,7 @@ public class MemoController {
 	@GetMapping("/update-action/{uid}")
 	public String updateAction(@PathVariable String uid, Model model) {
 		model.addAttribute("tags", cdService.findByCategory(TAG_CODE));
-		model.addAttribute(memoService.findByUId(UUID.fromString(uid)));
+		model.addAttribute("memo", memoService.findByUId(UUID.fromString(uid)));
 		model.addAttribute("action_jp", "編集");
 		model.addAttribute("action", "update");
 		return "memo_action";
@@ -112,7 +112,7 @@ public class MemoController {
 	@GetMapping("/delete-action/{uid}")
 	public String deleteActionBefore(@PathVariable String uid, Model model) {
 		model.addAttribute("tags", cdService.findByCategory(TAG_CODE));
-		model.addAttribute(memoService.findByUId(UUID.fromString(uid)));
+		model.addAttribute("memo", memoService.findByUId(UUID.fromString(uid)));
 		model.addAttribute("action_jp", "削除");
 		model.addAttribute("action", "delete");
 		return "memo_action";
@@ -126,7 +126,7 @@ public class MemoController {
 	@GetMapping("/delete-action")
 	public String deleteActionAfter(Model model) {
 		model.addAttribute("tags", cdService.findByCategory(TAG_CODE));
-		model.addAttribute(new Memo());
+		model.addAttribute("memo", new Memo());
 		model.addAttribute("action_jp", "削除");
 		model.addAttribute("action", "delete");
 		return "memo_action";

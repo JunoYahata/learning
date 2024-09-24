@@ -117,27 +117,20 @@ input.insert_button{
 }
 
 dialog {
-	width: 70vw;
-	height: 70vh;
-	overflow: hidden;
+	width: auto;
+	height: auto;
 
 }
 
 dialog iframe {
 	width: 100%;
-	height: 65vh;
-	scale: 1.5;
+	height: 90%;
 	border: none;
-	position: relative;
-	top: 100px;
+
 }
 
 iframe+form input {
-	scale: 1.5;
 	width: 100%;
-
-	
-
 }
 
 .contents iframe {

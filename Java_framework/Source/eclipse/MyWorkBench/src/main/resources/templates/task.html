@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<title>MEMO</title>
+	<title>TASK</title>
 	<meta charset="utf-8" />
 	<link rel="stylesheet" href="http://localhost:8080/common.css" />
 	<link rel="stylesheet" href="http://localhost:8080/task/task.css" />
@@ -11,52 +11,73 @@
 
 <body>
 	<input type="button" value="新しいタスク" class="insert_button">
-
-	<th:block th:each="list : ${tasks}" th:object="${list}">
+	<br>
+	<th:block th:each="task : ${tasks}">
 		<div class="task">
 			<div class="task_title">
 				<span th:text="'['+${task.tagCdName}+']'"></span>
 				<span th:text="'['+${task.classCdName}+']'"></span>
 				<span th:text="'['+${task.statusCdName}+']'"></span>
 				<span th:text="${task.title}"></span>
-				<input type="button" class="create_record_button" th:data-uid="${task.uid}">
-				<th:block th:if="${task.statusCd} == 0">
-					<form method="post" th:action="'task/start-action/'+${task.uid}">
-						<input type="submit" class="task_start_button">
+				<input type="button" class="create_record_button" value="作業記録" th:data-uid="${task.uid}">
+				<th:block th:if="${task.statusCd == '0'}">
+					<form method="post" action="start-action/">
+						<input type="text" name="uid" th:value="${task.uid}" hidden=true>
+						<button type="submit">着手</button>
 					</form>
 				</th:block>
-				<th:block th:if="${task.statusCd} == 1">
-					<form method="post" th:action="'task/complete-action/'+${task.uid}">
-						<input type="submit" class="task_complete_button">
+				<th:block th:if="${task.statusCd == '1'}">
+					<form method="post" action="complete-action/">
+						<input type="text" name="uid" th:value="${task.uid}" hidden=true>
+						<button type="submit">完了</button>
 					</form>
 				</th:block>
 				<input type="button" class="update_button" th:data-uid="${task.uid}">
 				<input type="button" class="copy_button" th:data-uid="${task.uid}">
 			</div>
 			<div class="task_body hidden" th:id="'mb_'+${task.uid}">
-				<input class="overview_title" type="button" value="概要">
+				<label class="overview_title"><input type="checkbox" checked hidden=true>概要</label>
 				<p th:text="${task.details}"></p>
-				<input class="process_title" type="button" value="プロセス">
+				<br>
+				<label class="process_title"><input type="checkbox" checked hidden=true>プロセス</label>
 				<div class="process">
-					<th:block th:each="process : ${task.processes}" th:object="${process}">
-						<th:block th:if="${process.statusCd} == 0 || ${process.statusCd} == 2">
-							<form method="post" th:action="'process/start-action/'+${process.uid}">
-								<input type="submit" class="process_start_button">
-							</form>
-						</th:block>
-						<th:block th:if="${process.statusCd} == 1">
-							<form method="post" th:action="'process/stop-action/'+${task.uid}">
-								<input type="submit" class="process_stop_button">
-							</form>
-						</th:block>
-						<th:block th:if="${process.statusCd} != 3">
-							<form method="post" th:action="'process/complete-action/'+${process.uid}">
-								<input type="submit" class="process_complete_button">
-							</form>
+					<th:block th:each="process : ${task.processes}">
+						<div class="process_1">
+							<th:block th:if="${process.processCd == '0' || process.processCd == '2'}">
+								<form method="post" action="process-start-action/">
+									<input type="text" name="uid" th:value="${process.uid}" hidden=true>
+									<button type="submit">開始する</button>
+								</form>
+							</th:block>
+							<th:block th:if="${process.processCd == '1'}">
+								<form method="post" action="process-stop-action/">
+									<input type="text" name="uid" th:value="${process.uid}" hidden=true>
+									<button type="submit">中止する</button>
+								</form>
+							</th:block>
+							<th:block th:if="${process.processCd != '3'}">
+								<form method="post" action="process-complete-action/">
+									<input type="text" name="uid" th:value="${process.uid}" hidden=true>
+									<button type="submit">完了する</button>
+								</form>
+							</th:block>
+							<span th:text="${process.title}"></span>
+							<a th:href="${process.link}" th:text="${process.link}"></a>
+						</div>
+					</th:block>
+				</div>
+				<br>
+				<label class="record_title"><input type="checkbox" checked hidden=true>作業記録</label>
+				<div class="record">
+					<th:block th:each="process : ${task.processes}">
+						<th:block th:each="record : ${process.records}">
+							<span th:text="${record.startTimeStr}+' ～ '+${record.stopTimeStr}"></span>
+							<span th:text="'メモ：'+${record.memo}"></span>
+							<input type="button" class="record_update_button" th:data-uid="${record.uid}">
+							<input type="button" class="record_delete_button" th:data-uid="${record.uid}">
+							<br>
 						</th:block>
 					</th:block>
-					<p th:text="${process.tile}"></p>
-					<a th:href="${process.link}"></a>
 				</div>
 				<p th:text="'作成：'+${task.createTimeStr}+', 更新：'+${task.updateTimeStr}"></p>
 			</div>

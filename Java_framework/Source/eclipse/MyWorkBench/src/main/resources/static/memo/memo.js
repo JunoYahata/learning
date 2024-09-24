@@ -21,11 +21,15 @@ document.querySelector('.insert_button').addEventListener('click', () => {
 	window.parent.postMessage('memo/insert-action', '*');
 });
 
-document.querySelector('.update_button').addEventListener('click', (e) => {
-	window.parent.postMessage('memo/update-action/' + e.target.dataset.uid, '*');
+document.querySelectorAll('.update_button').forEach((ol) => {
+	ol.addEventListener('click', (e) => {
+		window.parent.postMessage('memo/update-action/' + e.target.dataset.uid, '*');
+	});
 });
 
 
-document.querySelector('.delete_button').addEventListener('click', (e) => {
-	window.parent.postMessage('memo/delete-action/' + e.target.dataset.uid, '*');
+document.querySelectorAll('.delete_button').forEach((ol) => {
+	ol.addEventListener('click', (e) => {
+		window.parent.postMessage('memo/delete-action/' + e.target.dataset.uid, '*');
+	});
 });

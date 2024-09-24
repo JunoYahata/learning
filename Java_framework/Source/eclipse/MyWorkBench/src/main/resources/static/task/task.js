@@ -21,6 +21,34 @@ document.querySelector('.insert_button').addEventListener('click', () => {
 	window.parent.postMessage('task/insert-action', '*');
 });
 
-document.querySelector('.update_button').addEventListener('click', (e) => {
-	window.parent.postMessage('task/update-action/' + e.target.dataset.uid, '*');
+document.querySelectorAll('.update_button').forEach((ol) => {
+	ol.addEventListener('click', (e) => {
+		window.parent.postMessage('task/update-action/' + e.target.dataset.uid, '*');
+	});
 });
+
+document.querySelectorAll('.copy_button').forEach((ol) => {
+	ol.addEventListener('click', (e) => {
+		window.parent.postMessage('task/insert-action/' + e.target.dataset.uid, '*');
+	});
+});
+
+document.querySelectorAll('.create_record_button').forEach((ol) => {
+	ol.addEventListener('click', (e) => {
+		window.parent.postMessage('record/insert-action/' + e.target.dataset.uid, '*');
+	});
+});
+
+document.querySelectorAll('.record_update_button').forEach((ol) => {
+	ol.addEventListener('click', (e) => {
+		window.parent.postMessage('record/update-action/' + e.target.dataset.uid, '*');
+	});
+});
+
+document.querySelectorAll('.record_delete_button').forEach((ol) => {
+	ol.addEventListener('click', (e) => {
+		window.parent.postMessage('record/delete-action/' + e.target.dataset.uid, '*');
+	});
+});
+
+

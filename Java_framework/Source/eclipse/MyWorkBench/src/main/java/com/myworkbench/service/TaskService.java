@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
+import com.myworkbench.model.Cd;
 import com.myworkbench.model.Process;
 import com.myworkbench.model.Record;
 import com.myworkbench.model.Task;
+import com.myworkbench.repository.CdRepository;
 import com.myworkbench.repository.ProcessRepository;
 import com.myworkbench.repository.RecordRepository;
 import com.myworkbench.repository.TaskRepository;
@@ -26,23 +28,48 @@ public class TaskService {
 	@Autowired
 	RecordRepository recordRepository;
 
+	@Autowired
+	CdRepository cdRepository;
+
+	private final String TAG_CODE = "10";
+	private final String CLASS_CODE = "20";
+	private final String STATUS_CODE = "30";
+
 	public List<Task> FindAllTaskOnly() {
 		return taskRepository.findAll();
 	}
 
 	public Task findByUId(UUID uid) {
-		return taskRepository.findById(uid).orElseThrow();
+
+		Task task = taskRepository.findById(uid).orElseThrow();
+
+		Process processProbe = new Process();
+		processProbe.setPaUid(task.getUid());
+		List<Process> processes = processRepository.findAll(Example.of(processProbe));
+
+		// プロセスに作業記録を紐づける
+		for (Process process : processes) {
+			process.setTask(task);
+		}
+
+		task.setProcesses(processes);
+
+		return task;
 	}
 
 	public boolean insertOrUpdate(Task task) {
 
-		if (taskRepository.save(task) != null) {
+		Task saveTask = taskRepository.save(task);
+		if (saveTask != null) {
+			UUID parentUid = saveTask.getUid();
 			List<Process> processes = task.getProcesses();
 			if (processes != null) {
 				for (Process process : processes) {
 
+					process.setPaUid(parentUid);
+
 					if (process.getTitle().replaceAll("　", "").replaceAll(" ", "").length() > 0) {
-						
+
 						processRepository.save(process);
 
 					} else if (process.getUid() != null && process.getUid().toString().length() > 0) {
@@ -62,6 +89,8 @@ public class TaskService {
 		// タスクにプロセスを紐づける
 		for (Task task : tasks) {
 
+			setTaskString(task);
+			task.setTimeStr();
 			Process processProbe = new Process();
 			processProbe.setPaUid(task.getUid());
 			List<Process> processes = processRepository.findAll(Example.of(processProbe));
@@ -70,14 +99,15 @@ public class TaskService {
 			for (Process process : processes) {
 
 				Record recordProbe = new Record();
-				recordProbe.setPaUid(task.getUid());
+				recordProbe.setPaUid(process.getUid());
 				List<Record> records = recordRepository.findAll(Example.of(recordProbe));
 
 				// 作業記録にプロセスを紐づける
 				for (Record record : records) {
+					record.setTimesStr();
 					record.setProcess(process);
 				}
-				process.setReords(records);
+				process.setRecords(records);
 
 				// プロセスにタスクを紐づける
 				process.setTask(task);
@@ -87,7 +117,37 @@ public class TaskService {
 
 		}
 
-		return taskRepository.findAll();
+		return tasks;
 	}
 
+	public Task setStatusStart(UUID uid) {
+
+		Task task = taskRepository.findById(uid).orElseThrow();
+		task.setStatusCd("1");
+		return taskRepository.save(task);
+	}
+
+	public Task setStatusComplete(UUID uid) {
+
+		Task task = taskRepository.findById(uid).orElseThrow();
+		task.setStatusCd("2");
+		return taskRepository.save(task);
+	}
+
+	public void setTaskString(Task task) {
+		Cd tagCode = new Cd();
+		tagCode.setCategory(TAG_CODE);
+		tagCode.setCd(task.getTagCd());
+		task.setTagCdName(cdRepository.findOne(Example.of(tagCode)).orElseThrow().getName());
+
+		Cd classCode = new Cd();
+		classCode.setCategory(CLASS_CODE);
+		classCode.setCd(task.getClassCd());
+		task.setClassCdName(cdRepository.findOne(Example.of(classCode)).orElseThrow().getName());
+
+		Cd statusCode = new Cd();
+		statusCode.setCategory(STATUS_CODE);
+		statusCode.setCd(task.getStatusCd());
+		task.setStatusCdName(cdRepository.findOne(Example.of(statusCode)).orElseThrow().getName());
+	}
 }

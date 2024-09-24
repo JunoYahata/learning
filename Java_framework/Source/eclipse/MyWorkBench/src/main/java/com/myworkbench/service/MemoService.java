@@ -27,11 +27,12 @@ public class MemoService {
 		List<Memo> memos = memoRepository.findAll();
 		for (Memo memo : memos) {
 			setString(memo);
+			memo.setTimeStr();
 		}
 
 		return memos;
 	}
-	
+
 	public Memo findByUId(UUID uid) {
 		return memoRepository.findById(uid).orElseThrow();
 	}
@@ -49,10 +50,6 @@ public class MemoService {
 		probe.setCategory(TAG_CODE);
 		probe.setCd(memo.getTagCd());
 		memo.setTagCdName(cdRepository.findOne(Example.of(probe)).orElseThrow().getName());
-
-		memo.setCreateTimeStr(memo.getCreateTime().toString());
-		memo.setUpdateTimeStr(memo.getUpdateTime().toString());
-
 	}
 
 }

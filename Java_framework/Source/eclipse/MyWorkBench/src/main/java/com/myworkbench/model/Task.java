@@ -51,15 +51,23 @@ public class Task {
 
 	@Column
 	private Date plannedStartDate;
+	@Transient
+	private String plannedStartDateStr;
 
 	@Column
 	private Date plannedEndDate;
+	@Transient
+	private String plannedEndDateStr;
 
 	@Column
 	private Date startDate;
+	@Transient
+	private String startDateStr;
 
 	@Column
 	private Date endDate;
+	@Transient
+	private String endDateStr;
 
 	@Column(updatable = false)
 	@CreatedDate
@@ -68,7 +76,7 @@ public class Task {
 	@Column
 	@LastModifiedDate
 	private Timestamp updateTime;
-	
+
 	@Transient
 	private String tagCdName;
 
@@ -79,7 +87,27 @@ public class Task {
 	private String statusCdName;
 
 	@Transient
+	private String createTimeStr;
+
+	@Transient
+	private String updateTimeStr;
+
+	@Transient
 	@OneToMany
 	private List<Process> processes;
+
+	public void setFourDate() {
+
+		this.setPlannedStartDate(Date.valueOf(plannedStartDateStr));
+		this.setPlannedEndDate(Date.valueOf(plannedEndDateStr));
+		this.setStartDate(Date.valueOf(startDateStr));
+		this.setEndDate(Date.valueOf(endDateStr));
+
+	}
+
+	public void setTimeStr() {
+		this.setCreateTimeStr(createTime.toString().substring(0, 16));
+		this.setUpdateTimeStr(updateTime.toString().substring(0, 16));
+	}
 
 }

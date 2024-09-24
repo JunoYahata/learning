@@ -34,7 +34,7 @@ public class LinkController {
 	@GetMapping("/insert-action")
 	public String insertAction(Model model) {
 		model.addAttribute("tags", cdService.findByCategory(TAG_CODE));
-		model.addAttribute(new Link());
+		model.addAttribute("link", new Link());
 		model.addAttribute("action_jp", "登録");
 		model.addAttribute("action", "insert");
 		return "link_action";
@@ -66,7 +66,7 @@ public class LinkController {
 	@GetMapping("/update-action/{uid}")
 	public String updateAction(@PathVariable String uid, Model model) {
 		model.addAttribute("tags", cdService.findByCategory(TAG_CODE));
-		model.addAttribute(linkService.findByUId(UUID.fromString(uid)));
+		model.addAttribute("link", linkService.findByUId(UUID.fromString(uid)));
 		model.addAttribute("action_jp", "編集");
 		model.addAttribute("action", "update");
 		return "link_action";
@@ -98,7 +98,7 @@ public class LinkController {
 	@GetMapping("/delete-action/{uid}")
 	public String deleteActionBefore(@PathVariable String uid, Model model) {
 		model.addAttribute("tags", cdService.findByCategory(TAG_CODE));
-		model.addAttribute(linkService.findByUId(UUID.fromString(uid)));
+		model.addAttribute("link", linkService.findByUId(UUID.fromString(uid)));
 		model.addAttribute("action_jp", "削除");
 		model.addAttribute("action", "delete");
 		return "link_action";
@@ -112,7 +112,7 @@ public class LinkController {
 	@GetMapping("/delete-action")
 	public String deleteActionAfter(Model model) {
 		model.addAttribute("tags", cdService.findByCategory(TAG_CODE));
-		model.addAttribute(new Link());
+		model.addAttribute("link", new Link());
 		model.addAttribute("action_jp", "削除");
 		model.addAttribute("action", "delete");
 		return "link_action";

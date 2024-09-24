@@ -61,6 +61,6 @@ public class Process {
 
 	@Transient
 	@OneToMany
-	private List<Record> reords = new ArrayList<>();
+	private List<Record> records = new ArrayList<>();
 
 }

@@ -5,9 +5,11 @@ import java.util.UUID;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -18,6 +20,7 @@ import lombok.Data;
 
 @Data
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "record")
 public class Record {
 
@@ -25,9 +28,6 @@ public class Record {
 	@GeneratedValue(strategy = GenerationType.UUID)
 	@Column
 	private UUID uid;
-
-	@Column
-	private Integer num;
 
 	@Column
 	private Timestamp startTime;
@@ -52,5 +52,23 @@ public class Record {
 	@Transient
 	@ManyToOne
 	private Process process;
+
+	@Transient
+	private String startTimeStr;
+	@Transient
+	private String stopTimeStr;
+	@Transient
+	private UUID gpaUid;
+
+	public void setTimes() {
+		this.setStartTime(Timestamp.valueOf(startTimeStr));
+		this.setStopTime(Timestamp.valueOf(stopTimeStr));
+	}
+
+	public void setTimesStr() {
+		this.setStartTimeStr(startTime.toString().substring(0, 19));
+		this.setStopTimeStr(stopTime.toString().substring(0, 19));
+
+	}
 
 }
