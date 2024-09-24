@@ -61,13 +61,13 @@ public class Record {
 	private UUID gpaUid;
 
 	public void setTimes() {
-		this.setStartTime(Timestamp.valueOf(startTimeStr));
-		this.setStopTime(Timestamp.valueOf(stopTimeStr));
+		this.setStartTime(Timestamp.valueOf(startTimeStr.concat(":00")));
+		this.setStopTime(Timestamp.valueOf(stopTimeStr.concat(":00")));
 	}
 
 	public void setTimesStr() {
-		this.setStartTimeStr(startTime.toString().substring(0, 19));
-		this.setStopTimeStr(stopTime.toString().substring(0, 19));
+		this.setStartTimeStr(startTime.toString().substring(0, 16));
+		this.setStopTimeStr(stopTime.toString().substring(0, 16));
 
 	}
 

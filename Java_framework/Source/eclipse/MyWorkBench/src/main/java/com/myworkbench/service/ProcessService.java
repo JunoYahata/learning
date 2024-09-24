@@ -32,5 +32,25 @@ public class ProcessService {
 
 		return repository.findAll(Example.of(processProbe));
 	}
+	
+	public Process setStatusStart(UUID uid) {
 
+		Process process = repository.findById(uid).orElseThrow();
+		process.setProcessCd("1");
+		return repository.save(process);
+	}
+	
+	public Process setStatusStop(UUID uid) {
+
+		Process process = repository.findById(uid).orElseThrow();
+		process.setProcessCd("2");
+		return repository.save(process);
+	}
+	
+	public Process setStatusComplete(UUID uid) {
+
+		Process process = repository.findById(uid).orElseThrow();
+		process.setProcessCd("3");
+		return repository.save(process);
+	}
 }

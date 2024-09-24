@@ -1,5 +1,6 @@
 package com.myworkbench.controller;
 
+import java.sql.Timestamp;
 import java.util.UUID;
 
 import org.springframework.beans.BeanUtils;
@@ -15,9 +16,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.myworkbench.form.TaskCreate;
+import com.myworkbench.model.Process;
+import com.myworkbench.model.Record;
+import com.myworkbench.model.RecordTemp;
 import com.myworkbench.model.Task;
 import com.myworkbench.service.CdService;
 import com.myworkbench.service.ProcessService;
+import com.myworkbench.service.RecordService;
+import com.myworkbench.service.RecordTempService;
 import com.myworkbench.service.TaskService;
 
 @Controller
@@ -34,6 +40,10 @@ public class TaskController {
 	TaskService taskService;
 	@Autowired
 	ProcessService processService;
+	@Autowired
+	RecordService recordService;
+	@Autowired
+	RecordTempService recordTempService;
 
 	/**
 	 * メインページ
@@ -181,12 +191,29 @@ public class TaskController {
 	 */
 	@PostMapping("/process-start-action/")
 	public String processStartAction(@RequestParam(name = "uid") String uid, Model model) {
-		
-		processService.
 
-		taskService.setStatusStart(UUID.fromString(uid));
+		RecordTemp recordTemp = recordTempService.find();
+		if (recordTemp != null) {
+			processService.setStatusStop(recordTemp.getProcessUid());
+			Record record = new Record();
+			record.setPaUid(recordTemp.getProcessUid());
+			record.setStartTime(recordTemp.getStartTime());
+			record.setStopTime(new Timestamp(System.currentTimeMillis()));
+			record.setMemo("");
+			recordService.insertOrUpdate(record);
+			recordTempService.deleteAll();
+		}
+		Process process = processService.findByUId(UUID.fromString(uid));
+		recordTemp = new RecordTemp();
+		recordTemp.setProcessUid(process.getUid());
+		recordTemp.setTaskUid(process.getPaUid());
+		recordTemp.setStartTime(new Timestamp(System.currentTimeMillis()));
+		recordTempService.insert(recordTemp);
+		processService.setStatusStart(UUID.fromString(uid));
+
 		return "redirect:/task/";
 	}
+
 
 	/**
 	 * 作業中止処理
@@ -196,8 +223,19 @@ public class TaskController {
 	 */
 	@PostMapping("/process-stop-action/")
 	public String processStopAction(@RequestParam(name = "uid") String uid, Model model) {
+		RecordTemp recordTemp = recordTempService.find();
 
-		taskService.setStatusComplete(UUID.fromString(uid));
+		if (recordTemp != null && recordTemp.getProcessUid().toString().equals(uid)) {
+			Record record = new Record();
+			record.setPaUid(recordTemp.getProcessUid());
+			record.setStartTime(recordTemp.getStartTime());
+			record.setStopTime(new Timestamp(System.currentTimeMillis()));
+			record.setMemo("");
+			recordService.insertOrUpdate(record);
+			recordTempService.deleteAll();
+		}
+
+		processService.setStatusStop(UUID.fromString(uid));
 		return "redirect:/task/";
 	}
 
@@ -207,10 +245,20 @@ public class TaskController {
 	 * @param model
 	 * @return
 	 */
-	@PostMapping("/complete-action/")
+	@PostMapping("/process-complete-action/")
 	public String processCompleteAction(@RequestParam(name = "uid") String uid, Model model) {
+		RecordTemp recordTemp = recordTempService.find();
+		if (recordTemp != null && recordTemp.getProcessUid().toString().equals(uid)) {
+			Record record = new Record();
+			record.setPaUid(recordTemp.getProcessUid());
+			record.setStartTime(recordTemp.getStartTime());
+			record.setStopTime(new Timestamp(System.currentTimeMillis()));
+			record.setMemo("");
+			recordService.insertOrUpdate(record);
+			recordTempService.deleteAll();
+		}
 
-		taskService.setStatusComplete(UUID.fromString(uid));
+		processService.setStatusComplete(UUID.fromString(uid));
 		return "redirect:/task/";
 	}
 }

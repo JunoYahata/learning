@@ -54,7 +54,8 @@
 									<input type="text" name="uid" th:value="${process.uid}" hidden=true>
 									<button type="submit">中止する</button>
 								</form>
-							</th:block>
+							</th:block>							
+							<th:block th:if="${process.processCd == '3'}">[完]</th:block>
 							<th:block th:if="${process.processCd != '3'}">
 								<form method="post" action="process-complete-action/">
 									<input type="text" name="uid" th:value="${process.uid}" hidden=true>

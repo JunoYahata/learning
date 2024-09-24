@@ -1,5 +1,6 @@
 package com.myworkbench.service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
@@ -85,6 +86,12 @@ public class TaskService {
 	public List<Task> findAll() {
 
 		List<Task> tasks = taskRepository.findAll();
+		tasks.sort(new Comparator<Task>() {
+            @Override
+            public int compare(Task p1, Task p2) {
+                return p1.getCreateTime().compareTo(p2.getCreateTime());
+            }
+        });
 
 		// タスクにプロセスを紐づける
 		for (Task task : tasks) {
@@ -107,6 +114,7 @@ public class TaskService {
 					record.setTimesStr();
 					record.setProcess(process);
 				}
+				
 				process.setRecords(records);
 
 				// プロセスにタスクを紐づける
