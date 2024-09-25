@@ -24,7 +24,7 @@ public class MemoService {
 
 	public List<Memo> findAll() {
 
-		List<Memo> memos = memoRepository.findAll();
+		List<Memo> memos = memoRepository.findAllByOrderByCreateTimeDesc();
 		for (Memo memo : memos) {
 			setString(memo);
 			memo.setTimeStr();

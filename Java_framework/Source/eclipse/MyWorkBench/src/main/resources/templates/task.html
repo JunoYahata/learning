@@ -15,29 +15,44 @@
 	<th:block th:each="task : ${tasks}">
 		<div class="task">
 			<div class="task_title">
-				<span th:text="'['+${task.tagCdName}+']'"></span>
-				<span th:text="'['+${task.classCdName}+']'"></span>
-				<span th:text="'['+${task.statusCdName}+']'"></span>
-				<span th:text="${task.title}"></span>
-				<input type="button" class="create_record_button" value="作業記録" th:data-uid="${task.uid}">
-				<th:block th:if="${task.statusCd == '0'}">
-					<form method="post" action="start-action/">
-						<input type="text" name="uid" th:value="${task.uid}" hidden=true>
-						<button type="submit">着手</button>
-					</form>
-				</th:block>
-				<th:block th:if="${task.statusCd == '1'}">
-					<form method="post" action="complete-action/">
-						<input type="text" name="uid" th:value="${task.uid}" hidden=true>
-						<button type="submit">完了</button>
-					</form>
-				</th:block>
-				<input type="button" class="update_button" th:data-uid="${task.uid}">
-				<input type="button" class="copy_button" th:data-uid="${task.uid}">
+				<table>
+					<tr>
+						<td>
+							<span th:text="'['+${task.tagCdName}+']'"></span>
+							<span th:text="'['+${task.classCdName}+']'"></span>
+							<span th:text="'['+${task.statusCdName}+']'"></span>
+							<span th:text="${task.title}"></span>
+						</td>
+						<td>
+							<input type="button" class="create_record_button" value="作業記録" th:data-uid="${task.uid}">
+							<th:block th:if="${task.statusCd == '0'}">
+								<form method="post" action="start-action/">
+									<input type="text" name="uid" th:value="${task.uid}" hidden=true>
+									<button type="submit">着手</button>
+								</form>
+							</th:block>
+							<th:block th:if="${task.statusCd == '1'}">
+								<form method="post" action="complete-action/">
+									<input type="text" name="uid" th:value="${task.uid}" hidden=true>
+									<button type="submit">完了</button>
+								</form>
+							</th:block>
+							<input type="button" class="update_button" th:data-uid="${task.uid}">
+							<input type="button" class="copy_button" th:data-uid="${task.uid}">
+						</td>
+					</tr>
+				</table>
 			</div>
 			<div class="task_body hidden" th:id="'mb_'+${task.uid}">
 				<label class="overview_title"><input type="checkbox" checked hidden=true>概要</label>
-				<p th:text="${task.details}"></p>
+				<p>
+					<th:block th:if="${task.details}">
+						<th:block th:each="str, stat :${task.details.split('\r\n|\r|\n', -1)}">
+							<th:block th:text="${str}" />
+							<br th:if="${!stat.last}" />
+						</th:block>
+					</th:block>
+				</p>
 				<br>
 				<label class="process_title"><input type="checkbox" checked hidden=true>プロセス</label>
 				<div class="process">
@@ -54,7 +69,7 @@
 									<input type="text" name="uid" th:value="${process.uid}" hidden=true>
 									<button type="submit">中止する</button>
 								</form>
-							</th:block>							
+							</th:block>
 							<th:block th:if="${process.processCd == '3'}">[完]</th:block>
 							<th:block th:if="${process.processCd != '3'}">
 								<form method="post" action="process-complete-action/">
@@ -65,28 +80,25 @@
 							<span th:text="${process.title}"></span>
 							<a th:href="${process.link}" th:text="${process.link}"></a>
 						</div>
-					</th:block>
-				</div>
-				<br>
-				<label class="record_title"><input type="checkbox" checked hidden=true>作業記録</label>
-				<div class="record">
-					<th:block th:each="process : ${task.processes}">
-						<th:block th:each="record : ${process.records}">
-							<span th:text="${record.startTimeStr}+' ～ '+${record.stopTimeStr}"></span>
-							<span th:text="'メモ：'+${record.memo}"></span>
-							<input type="button" class="record_update_button" th:data-uid="${record.uid}">
-							<input type="button" class="record_delete_button" th:data-uid="${record.uid}">
-							<br>
-						</th:block>
+						<label class="record_title"><input type="checkbox" checked hidden=true>　作業記録</label>
+						<div class="record">
+							<th:block th:each="record : ${process.records}">
+								<span th:text="'　　'+${record.startTimeStr}+' ～ '+${record.stopTimeStr}"></span>
+								<span th:text="'メモ：'+${record.memo}"></span>
+								<input type="button" class="record_update_button" th:data-uid="${record.uid}">
+								<input type="button" class="record_delete_button" th:data-uid="${record.uid}">
+								<br>
+							</th:block>
+						</div>
 					</th:block>
 				</div>
 				<p th:text="'作成：'+${task.createTimeStr}+', 更新：'+${task.updateTimeStr}"></p>
 			</div>
-		</div>
-		<div class="task_ol">
-			<input type="button" th:id="'db_'+${task.uid}" class="task_outline" th:data-id="${task.uid}" value="▽">
-			<input type="button" th:id="'ub_'+${task.uid}" class="task_outline hidden" th:data-id="${task.uid}"
-				value="△">
+			<div class="task_ol">
+				<input type="button" th:id="'db_'+${task.uid}" class="task_outline" th:data-id="${task.uid}" value="▽">
+				<input type="button" th:id="'ub_'+${task.uid}" class="task_outline hidden" th:data-id="${task.uid}"
+					value="△">
+			</div>
 		</div>
 	</th:block>
 </body>

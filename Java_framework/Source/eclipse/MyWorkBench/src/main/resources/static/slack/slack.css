@@ -9,9 +9,37 @@ body {
 	overflow-y: scroll;
 }
 
-insert_button {
-	padding: 10px;
+div.status_selector {
+	display: flex;
 }
+
+div.horizontal_scrolling {
+	padding-inline: 10px;
+	max-height: 670px;
+	overflow-x: hidden;
+}
+
+div.frame {
+	width: 100px;
+	height: 150px;
+	border: 1px solid rgb(255, 255, 255);
+	border-radius: 25px;
+}
+
+div.frame:hover {
+	color: black;
+	background-color: aliceblue;
+}
+
+div.insert_button {
+	text-align: center;
+}
+
+div.insert_button span {
+	line-height: 150px;
+	font-size: 50px;
+}
+
 
 input.update_button {
 	width: 26px;
@@ -33,39 +61,4 @@ input.delete_button {
 
 input.delete_button:hover {
 	background-image: url(../img/dustbox_on.png);
-}
-
-dialog {
-	width: 450px;
-	height: 600px;
-	overflow: hidden;
-
-}
-
-div div {
-	border: 1px solid rgb(255, 255, 255);
-	width: 99%;
-}
-
-.memo {
-	padding: 5px;
-}
-.memo_ol {
-	text-align: center;
-}
-.memo_outline {
-	width: 99%;
-}
-
-table {
-	table-layout: fixed;
-	width: 100%;
-}
-
-table td:nth-of-type(1) {
-	text-align: left;
-}
-
-table td:nth-of-type(2) {
-	text-align:right;
 }

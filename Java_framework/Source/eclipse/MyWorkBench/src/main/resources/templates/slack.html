@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>SLACK</title>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="http://localhost:8080/common.css" />
+	<link rel="stylesheet" href="http://localhost:8080/slack/slack.css" />
+	<script defer src="http://localhost:8080/slack/slack.js"></script>
+</head>
+
+<body>
+	<span>SEEDステータス更新</span>
+	<span class=".result"></span>
+	<div class="status_selector">
+		<div class="insert_button frame">
+			<span>+</span>
+		</div>
+		<div class="left_button frame">
+			<span>＜</span>
+		</div>
+		<div class="horizontal_scrolling">
+			<th:block th:each="status : ${statuses}" th:object="${status}">
+				<form method="post" action="status-update/SEED">
+					<input type="text" name="message" th:value="*{message}" hidden=ture>
+					<input type="text" name="statusEmoji" th:value="*{statusEmoji}" hidden=ture>
+					<input type="text" name="time" th:value="*{time}" hidden=ture>
+					<input type="submit" th:id="'form_'+*{uid}">
+				</form>
+				<div class="update_status frame" th:data-uid="*{uid}">
+					<p th:text="*{title}"></p>
+					<p th:text="*{message}"></p>
+					<p th:text="*{statusEmoji}"></p>
+					<p th:text="*{time}"></p>
+					<input type="button" class="update_button" th:data-uid="*{uid}">
+					<input type="button" class="delete_button" th:data-uid="*{uid}">
+				</div>
+			</th:block>
+		</div>
+		<div class="right_button frame">
+			<span>＞</span>
+		</div>
+	</div>
+
+</body>
+
+</html>

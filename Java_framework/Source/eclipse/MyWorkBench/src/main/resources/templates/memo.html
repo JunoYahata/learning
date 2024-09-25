@@ -15,13 +15,28 @@
 	<th:block th:each="list : ${memos}" th:object="${list}">
 		<div class="memo">
 			<div class="memo_title">
-				<span th:text="'['+*{tagCdName}+']'"></span>
-				<span th:text="*{title}"></span>
-				<input type="button" class="update_button" th:data-uid="*{uid}">
-				<input type="button" class="delete_button" th:data-uid="*{uid}">
+				<table>
+					<tr>
+						<td>
+							<span th:text="'['+*{tagCdName}+']'"></span>
+							<span th:text="*{title}"></span>
+						</td>
+						<td>
+							<input type="button" class="update_button" th:data-uid="*{uid}">
+							<input type="button" class="delete_button" th:data-uid="*{uid}">
+						</td>
+					</tr>
+				</table>
 			</div>
 			<div class="memo_body hidden" th:id="'mb_'+*{uid}">
-				<span th:text="*{details}"></span>
+				<p>
+					<th:block th:if="${list.details}">
+					    <th:block th:each="str, stat :${list.details.split('\r\n|\r|\n', -1)}">
+					        <th:block th:text="${str}"/>
+					        <br th:if="${!stat.last}"/>
+					    </th:block>
+					</th:block>
+				</p>
 				<p th:text="'作成：'+*{createTimeStr}+', 更新：'+*{updateTimeStr}"></p>
 			</div>
 			<div class="memo_ol">

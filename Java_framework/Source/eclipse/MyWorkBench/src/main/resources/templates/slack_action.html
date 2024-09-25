@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>スラックテンプレート操作画面</title>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="http://localhost:8080/common.css" />
+	<link rel="stylesheet" href="http://localhost:8080/slack/slack_action.css" />
+	<script defer src="http://localhost:8080/slack/slack_action.js"></script>
+</head>
+
+<body>
+
+	<span th:text="'スラックテンプレート'+${action_jp}"></span>
+	<p class="result"></p>
+	<form method="post" th:action="'/slack/'+${action}+'/result'" id="form">
+
+		<input type="text" name="uid" class="hidden" th:value="${slack.uid}">
+		<table>
+			<tr>
+				<td>タイトル：</td>
+				<td>
+					<input type="text" class="entry_field" name="title" th:value="${slack.title}">
+				</td>
+			</tr>
+			<tr>
+				<td>クラス：</td>
+				<td>
+					<select name="slackCd" class="entry_field">
+						<th:block th:each="list : ${cds}" th:object="${list}">
+							<th:block th:if="${slack.slackCd} == *{cd}">
+								<option th:label="*{name}" th:value="*{cd}" selected />
+							</th:block>
+							<th:block th:if="${slack.slackCd} != *{cd}">
+								<option th:label="*{name}" th:value="*{cd}" />
+							</th:block>
+						</th:block>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>絵文字：</td>
+				<td>
+					<input type="text" class="entry_field" name="statusEmoji" th:value="${slack.statusEmoji}">
+				</td>
+			</tr>			
+			<tr>
+				<td>時間：</td>
+				<td>
+					<input type="text" class="entry_field" name="time" th:value="${slack.time}">
+				</td>
+			</tr>
+			<tr>
+				<td>内容：</td>
+				<td>
+					<textarea cols="60" rows="15" class="big entry_field" name="message"
+						th:text="${slack.message}"></textarea>
+				</td>
+			</tr>
+		</table>
+		<input type="submit" th:value="${action_jp}">
+	</form>
+</body>
+
+</html>

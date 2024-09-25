@@ -1,6 +1,5 @@
 package com.myworkbench.service;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
@@ -43,10 +42,7 @@ public class TaskService {
 	public Task findByUId(UUID uid) {
 
 		Task task = taskRepository.findById(uid).orElseThrow();
-
-		Process processProbe = new Process();
-		processProbe.setPaUid(task.getUid());
-		List<Process> processes = processRepository.findAll(Example.of(processProbe));
+		List<Process> processes = processRepository.findAllByPaUidOrderByNumAscCreateTimeAsc(task.getUid());
 
 		// プロセスに作業記録を紐づける
 		for (Process process : processes) {
@@ -85,29 +81,18 @@ public class TaskService {
 
 	public List<Task> findAll() {
 
-		List<Task> tasks = taskRepository.findAll();
-		tasks.sort(new Comparator<Task>() {
-            @Override
-            public int compare(Task p1, Task p2) {
-                return p1.getCreateTime().compareTo(p2.getCreateTime());
-            }
-        });
+		List<Task> tasks = taskRepository.findAllByOrderByCreateTimeDesc();
 
 		// タスクにプロセスを紐づける
 		for (Task task : tasks) {
 
 			setTaskString(task);
 			task.setTimeStr();
-			Process processProbe = new Process();
-			processProbe.setPaUid(task.getUid());
-			List<Process> processes = processRepository.findAll(Example.of(processProbe));
+			List<Process> processes = processRepository.findAllByPaUidOrderByNumAscCreateTimeAsc(task.getUid());
 
 			// プロセスに作業記録を紐づける
 			for (Process process : processes) {
-
-				Record recordProbe = new Record();
-				recordProbe.setPaUid(process.getUid());
-				List<Record> records = recordRepository.findAll(Example.of(recordProbe));
+				List<Record> records = recordRepository.findAllByPaUidOrderByCreateTimeDesc(process.getUid());
 
 				// 作業記録にプロセスを紐づける
 				for (Record record : records) {

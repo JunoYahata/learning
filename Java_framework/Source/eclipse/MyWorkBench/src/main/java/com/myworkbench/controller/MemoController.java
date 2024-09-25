@@ -62,6 +62,7 @@ public class MemoController {
 	 */
 	@PostMapping("/insert/result")
 	public String insert(@Validated Memo memo, Model model) {
+		
 
 		if (memoService.insertOrUpdate(memo)) {
 
