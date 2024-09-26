@@ -70,7 +70,7 @@ function dialogClose() {
 		}
 	});
 	document.querySelector('.dialog').close();
-	window.location.href = 'http://localhost:8080/?tab=' + currentTab;
+	window.location.href = url + '?tab=' + currentTab;
 
 }
 
@@ -79,9 +79,9 @@ window.addEventListener('message', e => {
 		document.querySelector('.dialog').removeChild(document.querySelector('.frame'));
 		document.querySelector('#dialog_message').classList.remove('hidden');
 		delayDialogClose(2000);
-	}else if (e.data == "failure") {
+	} else if (e.data == "failure") {
 		// 何もしない
-	}else {
+	} else {
 		document.querySelector('.frame').src = e.data;
 		document.querySelector('.dialog').showModal();
 	}

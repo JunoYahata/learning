@@ -12,6 +12,7 @@ import java.util.UUID;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
@@ -41,10 +42,12 @@ public class TaskController {
 	private final String CLASS_CODE = "20";
 	private final String INIT_TATUS_CODE = "0";
 
-	private final String SEED_ID = " Bearer ";
-	private final String WORKPLACE_ID = " Bearer ";
-
-	private final String MY_DM_ID = " Bearer ";
+	@Value("${token.seed.status}")
+	private String seedToken;
+	@Value("${token.workplace.status}")
+	private String workPlaceToken;
+	@Value("${token.mydm.chat}")
+	private String seedMyDMToken;
 
 	public String slackStatusPost(String Authorization, String... process) throws IOException, InterruptedException {
 		String bodyJsonString = new String();
@@ -70,7 +73,7 @@ public class TaskController {
 		BodyPublisher bodyPublisher = BodyPublishers.ofString(bodyJsonString);
 		HttpRequest request = HttpRequest.newBuilder(
 				URI.create("https://slack.com/api/users.profile.set"))
-				.header("Authorization", Authorization)
+				.header("Authorization", " Bearer " + Authorization)
 				.header("Content-type", "application/json; charset=utf-8")
 				.POST(bodyPublisher)
 				.build();
@@ -92,7 +95,7 @@ public class TaskController {
 		BodyPublisher bodyPublisher = BodyPublishers.ofString(bodyJsonString);
 		HttpRequest request = HttpRequest.newBuilder(
 				URI.create("https://slack.com/api/chat.meMessage"))
-				.header("Authorization", Authorization)
+				.header("Authorization", " Bearer " + Authorization)
 				.header("Content-type", "application/json; charset=utf-8")
 				.POST(bodyPublisher)
 				.build();
@@ -289,8 +292,8 @@ public class TaskController {
 			record.setMemo("");
 			recordService.insertOrUpdate(record);
 			try {
-				slackStatusPost(SEED_ID);
-				slackStatusPost(WORKPLACE_ID);
+				slackStatusPost(seedToken);
+				slackStatusPost(workPlaceToken);
 
 			} catch (IOException | InterruptedException e) {
 				e.printStackTrace();
@@ -308,13 +311,14 @@ public class TaskController {
 		Task task = taskService.findByUId(process.getPaUid());
 		try {
 			if (task.getTagCd().equals("20")) {
-				slackStatusPost(SEED_ID, "[" + task.getTitleShort() + "]", process.getTitle() + " 作業中",
+				slackStatusPost(seedToken, "[" + task.getTitleShort() + "]", process.getTitle() + " 作業中",
 						process.getEmoji());
 			} else if (task.getTagCd().equals("30")) {
-				slackStatusPost(WORKPLACE_ID, "[" + task.getTitleShort() + "]", process.getTitle() + " 作業中",
+				slackStatusPost(workPlaceToken, "[" + task.getTitleShort() + "]", process.getTitle() + " 作業中",
 						process.getEmoji());
 			}
-			messageToMyDM(MY_DM_ID, changeMessage + "[" + task.getTitleShort() + "]" + process.getTitle() + " 作業開始");
+			messageToMyDM(seedMyDMToken,
+					changeMessage + "[" + task.getTitleShort() + "]" + process.getTitle() + " 作業開始");
 		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -339,9 +343,9 @@ public class TaskController {
 			record.setMemo("");
 			recordService.insertOrUpdate(record);
 			try {
-				slackStatusPost(SEED_ID);
-				slackStatusPost(WORKPLACE_ID);
-				messageToMyDM(MY_DM_ID,"作業中止。");
+				slackStatusPost(seedToken);
+				slackStatusPost(workPlaceToken);
+				messageToMyDM(seedMyDMToken, "作業中止。");
 
 			} catch (IOException | InterruptedException e) {
 				e.printStackTrace();
@@ -370,9 +374,9 @@ public class TaskController {
 			record.setMemo("");
 			recordService.insertOrUpdate(record);
 			try {
-				slackStatusPost(SEED_ID);
-				slackStatusPost(WORKPLACE_ID);
-				messageToMyDM(MY_DM_ID,"作業完了。");
+				slackStatusPost(seedToken);
+				slackStatusPost(workPlaceToken);
+				messageToMyDM(seedMyDMToken, "作業完了。");
 
 			} catch (IOException | InterruptedException e) {
 				e.printStackTrace();

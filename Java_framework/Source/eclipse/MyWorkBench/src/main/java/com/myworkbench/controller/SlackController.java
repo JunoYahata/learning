@@ -10,6 +10,7 @@ import java.net.http.HttpResponse.BodyHandlers;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
@@ -27,8 +28,10 @@ import com.myworkbench.service.SlackService;
 @RequestMapping("/slack")
 public class SlackController {
 
-	private final String SEED_ID = " Bearer ";
-	private final String WORKPLACE_ID = " Bearer ";
+	@Value("${token.seed.status}")
+	private String seedToken;
+	@Value("${token.workplace.status}")
+	private String workPlaceToken;
 
 	private final String SLACK_CODE = "50";
 
@@ -54,7 +57,7 @@ public class SlackController {
 		BodyPublisher bodyPublisher = BodyPublishers.ofString(bodyJsonString);
 		HttpRequest request = HttpRequest.newBuilder(
 				URI.create("https://slack.com/api/users.profile.set"))
-				.header("Authorization", Authorization)
+				.header("Authorization", " Bearer " + Authorization)
 				.header("Content-type", "application/json; charset=utf-8")
 				.POST(bodyPublisher)
 				.build();
@@ -89,7 +92,7 @@ public class SlackController {
 		String result = "";
 
 		try {
-			slackStatusPost(SEED_ID, slack);
+			slackStatusPost(seedToken, slack);
 			result = "success";
 		} catch (Exception e) {
 			// TODO 自動生成された catch ブロック
@@ -111,7 +114,7 @@ public class SlackController {
 		String result = "";
 
 		try {
-			slackStatusPost(WORKPLACE_ID, slack);
+			slackStatusPost(workPlaceToken, slack);
 			result = "success";
 		} catch (Exception e) {
 			// TODO 自動生成された catch ブロック

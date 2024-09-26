@@ -94,24 +94,24 @@ input.update_button {
 	width: 26px;
 	height: 26px;
 	color: rgba(0, 0, 0, 0);
-	background-image: url(./img/pen.png);
+	background-image: url(/img/pen.png);
 	cursor: pointer;
 }
 
 input.update_button:hover {
-	background-image: url(./img/pen_on.png);
+	background-image: url(/img/pen_on.png);
 }
 
 input.delete_button {
 	width: 26px;
 	height: 26px;
 	color: rgba(0, 0, 0, 0);
-	background-image: url(./img/dustbox.png);
+	background-image: url(/img/dustbox.png);
 	cursor: pointer;
 }
 
 input.delete_button:hover {
-	background-image: url(./img/dustbox_on.png);
+	background-image: url(/img/dustbox_on.png);
 }
 
 input.insert_button {
