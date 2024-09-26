@@ -42,7 +42,7 @@ public class RecordService {
 	}
 
 	public List<Record> findAll() {
-		return recordRepository.findAll();
+		return recordRepository.findAllByOrderByStopTimeDesc();
 	}
 
 	public boolean insertOrUpdate(Record record) {

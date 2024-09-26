@@ -100,8 +100,10 @@ public class Task {
 
 		this.setPlannedStartDate(Date.valueOf(plannedStartDateStr));
 		this.setPlannedEndDate(Date.valueOf(plannedEndDateStr));
-		this.setStartDate(Date.valueOf(startDateStr));
-		this.setEndDate(Date.valueOf(endDateStr));
+		if (startDateStr != "")
+			this.setStartDate(Date.valueOf(startDateStr));
+		if (endDateStr != "")
+			this.setEndDate(Date.valueOf(endDateStr));
 
 	}
 

@@ -10,36 +10,63 @@
 </head>
 
 <body>
-	<span>SEEDステータス更新</span>
+	<span>SeeDステータス更新</span>
 	<span class=".result"></span>
 	<div class="status_selector">
-		<div class="insert_button frame">
-			<span>+</span>
-		</div>
-		<div class="left_button frame">
-			<span>＜</span>
-		</div>
-		<div class="horizontal_scrolling">
+		<button class="insert_button frame simple">
+			+
+		</button>
+		<button class="left_button frame simple hidden" id="seed_left" data-idh="#seed_">
+			＜
+		</button>
+		<div class="horizontal_scrolling" id="seed_status">
 			<th:block th:each="status : ${statuses}" th:object="${status}">
-				<form method="post" action="status-update/SEED">
+				<form method="post" action="status-update/SeeD">
 					<input type="text" name="message" th:value="*{message}" hidden=ture>
 					<input type="text" name="statusEmoji" th:value="*{statusEmoji}" hidden=ture>
 					<input type="text" name="time" th:value="*{time}" hidden=ture>
-					<input type="submit" th:id="'form_'+*{uid}">
-				</form>
-				<div class="update_status frame" th:data-uid="*{uid}">
-					<p th:text="*{title}"></p>
-					<p th:text="*{message}"></p>
-					<p th:text="*{statusEmoji}"></p>
-					<p th:text="*{time}"></p>
+					<input type="submit" th:id="'form_'+*{uid}" hidden=ture>
+					<button type="submit" class="update_status frame" th:data-uid="*{uid}">
+						<p th:text="*{title}"></p>
+						<p th:text="*{time}"></p>
+					</button>
 					<input type="button" class="update_button" th:data-uid="*{uid}">
 					<input type="button" class="delete_button" th:data-uid="*{uid}">
-				</div>
+				</form>
 			</th:block>
 		</div>
-		<div class="right_button frame">
-			<span>＞</span>
+		<button class="right_button frame simple" id="seed_right" data-idh="#seed_">
+			＞
+		</button>
+	</div>
+	<span>参画先ステータス更新</span>
+	<span class=".result"></span>
+	<div class="status_selector">
+		<button class="insert_button frame simple">
+			+
+		</button>
+		<button class="left_button frame simple hidden" id="work_place_left" data-idh="#work_place_">
+			＜
+		</button>
+		<div class="horizontal_scrolling" id="work_place_status">
+			<th:block th:each="status : ${statuses}" th:object="${status}">
+				<form method="post" action="status-update/work-place">
+					<input type="text" name="message" th:value="*{message}" hidden=ture>
+					<input type="text" name="statusEmoji" th:value="*{statusEmoji}" hidden=ture>
+					<input type="text" name="time" th:value="*{time}" hidden=ture>
+					<input type="submit" th:id="'form_'+*{uid}" hidden=ture>
+					<button type="submit" class="update_status frame" th:data-uid="*{uid}">
+						<p th:text="*{title}"></p>
+						<p th:text="*{time}"></p>
+					</button>
+					<input type="button" class="update_button" th:data-uid="*{uid}">
+					<input type="button" class="delete_button" th:data-uid="*{uid}">
+				</form>
+			</th:block>
 		</div>
+		<button class="right_button frame simple" id="work_place_right" data-idh="#work_place_">
+			＞
+		</button>
 	</div>
 
 </body>

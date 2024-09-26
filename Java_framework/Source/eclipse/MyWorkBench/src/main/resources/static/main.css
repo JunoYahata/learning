@@ -95,6 +95,7 @@ input.update_button {
 	height: 26px;
 	color: rgba(0, 0, 0, 0);
 	background-image: url(./img/pen.png);
+	cursor: pointer;
 }
 
 input.update_button:hover {
@@ -106,13 +107,14 @@ input.delete_button {
 	height: 26px;
 	color: rgba(0, 0, 0, 0);
 	background-image: url(./img/dustbox.png);
+	cursor: pointer;
 }
 
 input.delete_button:hover {
 	background-image: url(./img/dustbox_on.png);
 }
 
-input.insert_button{
+input.insert_button {
 	width: 100%;
 }
 
@@ -138,5 +140,5 @@ iframe+form input {
 	height: 75vh;
 	border: none;
 	padding: 0;
-	
+
 }

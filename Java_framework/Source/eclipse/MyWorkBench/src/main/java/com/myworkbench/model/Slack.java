@@ -58,7 +58,7 @@ public class Slack {
 
 	public void calcEpochTime() {
 
-		if (this.time == "0") {
+		if (this.time.equals("0")) {
 			this.setEpochTime(Long.valueOf(this.time));
 		} else {
 			String time = this.time;

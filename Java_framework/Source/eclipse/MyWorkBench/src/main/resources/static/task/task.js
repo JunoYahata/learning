@@ -21,6 +21,10 @@ document.querySelector('.insert_button').addEventListener('click', () => {
 	window.parent.postMessage('task/insert-action', '*');
 });
 
+document.querySelector('.default_insert_button').addEventListener('click', () => {
+	window.parent.postMessage('task/default-insert-action', '*');
+});
+
 document.querySelectorAll('.update_button').forEach((ol) => {
 	ol.addEventListener('click', (e) => {
 		window.parent.postMessage('task/update-action/' + e.target.dataset.uid, '*');

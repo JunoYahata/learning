@@ -9,12 +9,6 @@ const FAILURE_MESSAGE = "更新に失敗しました";
 const url = new URL(window.location.href);
 const result = url.searchParams.get("result");
 
-document.querySelectorAll('.update_status').forEach((ol) => {
-	ol.addEventListener('click', (e) => {
-		document.querySelector('#form_' + e.target.dataset.uid).click();
-	});
-});
-
 document.querySelectorAll('.left_button').forEach((ol) => {
 	ol.addEventListener('click', (e) => {
 		const dvel = document.querySelector(e.target.dataset.idh + 'status');
@@ -58,18 +52,46 @@ document.querySelectorAll('.right_button').forEach((ol) => {
 	});
 });
 
-document.querySelector('.insert_button').addEventListener('click', () => {
-	window.parent.postMessage('slack/insert-action', '*');
+document.querySelector('.memo.insert_button').addEventListener('click', () => {
+	window.parent.postMessage('memo/insert-action', '*');
 });
 
-document.querySelectorAll('.update_button').forEach((ol) => {
+document.querySelectorAll('.memo.update_button').forEach((ol) => {
 	ol.addEventListener('click', (e) => {
-		window.parent.postMessage('slack/update-action/' + e.target.dataset.uid, '*');
+		window.parent.postMessage('memo/update-action/' + e.target.dataset.uid, '*');
 	});
 });
 
-document.querySelectorAll('.delete_button').forEach((ol) => {
+document.querySelectorAll('.memo.delete_button').forEach((ol) => {
 	ol.addEventListener('click', (e) => {
-		window.parent.postMessage('slack/delete-action/' + e.target.dataset.uid, '*');
+		window.parent.postMessage('memo/delete-action/' + e.target.dataset.uid, '*');
+	});
+});
+
+document.querySelector('.task.insert_button').addEventListener('click', () => {
+	window.parent.postMessage('task/insert-action', '*');
+});
+
+document.querySelectorAll('.task.update_button').forEach((ol) => {
+	ol.addEventListener('click', (e) => {
+		window.parent.postMessage('task/update-action/' + e.target.dataset.uid, '*');
+	});
+});
+
+document.querySelectorAll('.task.copy_button').forEach((ol) => {
+	ol.addEventListener('click', (e) => {
+		window.parent.postMessage('task/insert-action/' + e.target.dataset.uid, '*');
+	});
+});
+
+document.querySelectorAll('.record.update_button').forEach((ol) => {
+	ol.addEventListener('click', (e) => {
+		window.parent.postMessage('record/update-action/' + e.target.dataset.uid, '*');
+	});
+});
+
+document.querySelectorAll('.record.delete_button').forEach((ol) => {
+	ol.addEventListener('click', (e) => {
+		window.parent.postMessage('record/delete-action/' + e.target.dataset.uid, '*');
 	});
 });

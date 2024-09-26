@@ -1,5 +1,12 @@
 package com.myworkbench.controller;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpRequest.BodyPublisher;
+import java.net.http.HttpRequest.BodyPublishers;
+import java.net.http.HttpResponse.BodyHandlers;
 import java.sql.Timestamp;
 import java.util.UUID;
 
@@ -33,6 +40,44 @@ public class TaskController {
 	private final String TAG_CODE = "10";
 	private final String CLASS_CODE = "20";
 	private final String INIT_TATUS_CODE = "0";
+
+	private final String SEED_ID = "";
+	private final String WORKPLACE_ID = "";
+
+	public String slackStatusPost(String Authorization, String... process) throws IOException, InterruptedException {
+		String bodyJsonString = new String();
+		if (process.length < 3) {
+			bodyJsonString = ""
+					+ "{"
+					+ "\"profile\": {"
+					+ "\"status_text\": \"\""
+					+ ", "
+					+ "\"status_emoji\": \"\""
+					+ "}"
+					+ "}";
+		} else {
+			bodyJsonString = ""
+					+ "{"
+					+ "\"profile\": {"
+					+ "\"status_text\": \"" + process[0] + process[1] + "\""
+					+ ", "
+					+ "\"status_emoji\": \"" + process[2] + "\""
+					+ "}"
+					+ "}";
+		}
+		BodyPublisher bodyPublisher = BodyPublishers.ofString(bodyJsonString);
+		HttpRequest request = HttpRequest.newBuilder(
+				URI.create("https://slack.com/api/users.profile.set"))
+				.header("Authorization", Authorization)
+				.header("Content-type", "application/json; charset=utf-8")
+				.POST(bodyPublisher)
+				.build();
+
+		HttpClient client = HttpClient.newHttpClient();
+		String response = client.send(request, BodyHandlers.ofString()).body();
+
+		return response;
+	}
 
 	@Autowired
 	CdService cdService;
@@ -68,6 +113,23 @@ public class TaskController {
 		model.addAttribute("tags", cdService.findByCategory(TAG_CODE));
 		model.addAttribute("classes", cdService.findByCategory(CLASS_CODE));
 		model.addAttribute("taskCreate", new TaskCreate());
+		model.addAttribute("action_jp", "登録");
+		model.addAttribute("action", "insert");
+		return "task_action";
+	}
+
+	/**
+	 * タスク登録(汎用プロセス)の受付画面
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("/default-insert-action")
+	public String defaultInsertAction(Model model) {
+		TaskCreate taskCreate = new TaskCreate();
+		taskCreate.setDefaultProcess();
+		model.addAttribute("tags", cdService.findByCategory(TAG_CODE));
+		model.addAttribute("classes", cdService.findByCategory(CLASS_CODE));
+		model.addAttribute("taskCreate", taskCreate);
 		model.addAttribute("action_jp", "登録");
 		model.addAttribute("action", "insert");
 		return "task_action";
@@ -201,6 +263,13 @@ public class TaskController {
 			record.setStopTime(new Timestamp(System.currentTimeMillis()));
 			record.setMemo("");
 			recordService.insertOrUpdate(record);
+			try {
+				slackStatusPost(SEED_ID);
+				slackStatusPost(WORKPLACE_ID);
+
+			} catch (IOException | InterruptedException e) {
+				e.printStackTrace();
+			}
 			recordTempService.deleteAll();
 		}
 		Process process = processService.findByUId(UUID.fromString(uid));
@@ -210,10 +279,20 @@ public class TaskController {
 		recordTemp.setStartTime(new Timestamp(System.currentTimeMillis()));
 		recordTempService.insert(recordTemp);
 		processService.setStatusStart(UUID.fromString(uid));
-
+		Task task = taskService.findByUId(process.getPaUid());
+		try {
+			if (task.getTagCd().equals("20")) {
+				slackStatusPost(SEED_ID, "[" + task.getTitleShort() + "]", process.getTitle() + " 作業中",
+						process.getEmoji());
+			} else if (task.getTagCd().equals("30")) {
+				slackStatusPost(WORKPLACE_ID, "[" + task.getTitleShort() + "]", process.getTitle() + " 作業中",
+						process.getEmoji());
+			}
+		} catch (IOException | InterruptedException e) {
+			e.printStackTrace();
+		}
 		return "redirect:/task/";
 	}
-
 
 	/**
 	 * 作業中止処理
@@ -232,6 +311,13 @@ public class TaskController {
 			record.setStopTime(new Timestamp(System.currentTimeMillis()));
 			record.setMemo("");
 			recordService.insertOrUpdate(record);
+			try {
+				slackStatusPost(SEED_ID);
+				slackStatusPost(WORKPLACE_ID);
+
+			} catch (IOException | InterruptedException e) {
+				e.printStackTrace();
+			}
 			recordTempService.deleteAll();
 		}
 
@@ -255,6 +341,13 @@ public class TaskController {
 			record.setStopTime(new Timestamp(System.currentTimeMillis()));
 			record.setMemo("");
 			recordService.insertOrUpdate(record);
+			try {
+				slackStatusPost(SEED_ID);
+				slackStatusPost(WORKPLACE_ID);
+
+			} catch (IOException | InterruptedException e) {
+				e.printStackTrace();
+			}
 			recordTempService.deleteAll();
 		}
 

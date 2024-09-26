@@ -1,11 +1,9 @@
 package com.myworkbench.controller;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
@@ -33,19 +31,6 @@ public class RecordController {
 	TaskService taskService;
 	@Autowired
 	ProcessService processService;
-
-	/**
-	 * メインページ
-	 * @param mav
-	 * @return
-	 */
-	@GetMapping("/")
-	public ResponseEntity<List<Record>> getSampleJson() {
-
-		List<Record> records = recordService.findAll();
-
-		return ResponseEntity.ok(records);
-	}
 
 	/**
 	 * 作業記録登録の受付画面

@@ -10,12 +10,12 @@ body {
 
 div.status_selector {
 	display: flex;
+	height: 70vh;
 }
 
 div.horizontal_scrolling {
 	display: flex;
 	padding-inline: 10px;
-	max-width: 550px;
 	overflow-x: hidden;
 	scroll-behavior: smooth;
 }
@@ -24,7 +24,7 @@ button.frame {
 	background-color: black;
 	color: aliceblue;
 	min-width: 100px;
-	height: 120px;
+	height: 100%;
 	border: 1px solid rgb(255, 255, 255);
 	border-radius: 25px;
 	text-align: center;
@@ -33,23 +33,20 @@ button.frame {
 
 }
 
-form {
+div.frame {
 	background-color: black;
 	color: aliceblue;
 	border: 1px solid rgb(255, 255, 255);
 	border-radius: 25px;
 	text-align: center;
 	overflow: hidden;
+	min-width: 300px;
 	margin-inline: 5px;
-	min-width: 100px;
-	max-width: 100px;
-	height: 150px;
 }
 
 button.frame.simple {
-	line-height: 150px;
 	font-size: 50px;
-	height: 150px;
+	height: 100%;
 
 }
 
@@ -85,4 +82,16 @@ input.delete_button {
 
 input.delete_button:hover {
 	background-image: url(../img/dustbox_on.png);
+}
+
+input.copy_button {
+	width: 26px;
+	height: 26px;
+	color: rgba(0, 0, 0, 0);
+	background-image: url(../img/copy.png);
+	cursor: pointer;
+}
+
+input.copy_button:hover {
+	background-image: url(../img/copy_on.png);
 }

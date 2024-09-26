@@ -42,6 +42,9 @@ public class Process {
 	private String title;
 
 	@Column
+	private String emoji;
+
+	@Column
 	private String link;
 
 	@Column(updatable = false)

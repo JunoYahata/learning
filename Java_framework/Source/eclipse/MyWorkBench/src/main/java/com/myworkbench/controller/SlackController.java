@@ -29,27 +29,26 @@ public class SlackController {
 
 	private final String SEED_ID = "";
 	private final String WORKPLACE_ID = "";
-	
 
 	private final String SLACK_CODE = "50";
-	
+
 	@Autowired
 	CdService cdService;
 	@Autowired
 	SlackService slackService;
 
 	public String slackStatusPost(String Authorization, Slack slack) throws IOException, InterruptedException {
-		
+
 		slack.calcEpochTime();
 		String bodyJsonString = ""
 				+ "{"
-					+ "\"profile\": {"
-						+ "\"status_text\": \"" + slack.getMessage() + "\""
-						+ ", "
-						+ "\"status_emoji\": \"" + slack.getStatusEmoji() + "\""
-						+ ", "
-						+ "\"status_expiration\":" + (slack.getEpochTime() == 0 ? "" : (int)slack.getEpochTime())
-					+ "}"
+				+ "\"profile\": {"
+				+ "\"status_text\": \"" + slack.getMessage() + "\""
+				+ ", "
+				+ "\"status_emoji\": \"" + slack.getStatusEmoji() + "\""
+				+ (slack.getEpochTime() == 0 ? ""
+						: ",\"status_expiration\":" + (int) slack.getEpochTime())
+				+ "}"
 				+ "}";
 
 		BodyPublisher bodyPublisher = BodyPublishers.ofString(bodyJsonString);
@@ -59,15 +58,13 @@ public class SlackController {
 				.header("Content-type", "application/json; charset=utf-8")
 				.POST(bodyPublisher)
 				.build();
-		
+
 		HttpClient client = HttpClient.newHttpClient();
 		String response = client.send(request, BodyHandlers.ofString()).body();
 
 		return response;
 	}
-	
-	
-	
+
 	/**
 	 * メインページ
 	 * @param mav
@@ -80,17 +77,17 @@ public class SlackController {
 		mav.setViewName("slack");
 		return mav;
 	}
-	
+
 	/**
 	 * 
 	 * @param slack
 	 * @return
 	 */
-	@PostMapping("/status-update/SEED")
+	@PostMapping("/status-update/SeeD")
 	public String slackSEED(@Validated Slack slack) {
-		
+
 		String result = "";
-		
+
 		try {
 			slackStatusPost(SEED_ID, slack);
 			result = "success";
@@ -100,19 +97,19 @@ public class SlackController {
 			result = "failure";
 		}
 
-		return "redirect:/slack/?result="+result;
+		return "redirect:/slack/?result=" + result;
 	}
-	
+
 	/**
 	 * 
 	 * @param slack
 	 * @return
 	 */
-	@PostMapping("/status-update/workplace")
+	@PostMapping("/status-update/work-place")
 	public String slackWorkplace(@Validated Slack slack) {
-		
+
 		String result = "";
-		
+
 		try {
 			slackStatusPost(WORKPLACE_ID, slack);
 			result = "success";
@@ -122,112 +119,111 @@ public class SlackController {
 			result = "failure";
 		}
 
-		return "redirect:/slack/?result="+result;
+		return "redirect:/slack/?result=" + result;
 	}
-	
-	
-		/**
-		 * Slackテンプレート登録の受付画面
-		 * @param model
-		 * @return
-		 */
-		@GetMapping("/insert-action")
-		public String insertAction(Model model) {
-			model.addAttribute("cds", cdService.findByCategory(SLACK_CODE));
-			model.addAttribute("slack", new Slack());
-			model.addAttribute("action_jp", "登録");
-			model.addAttribute("action", "insert");
-			return "slack_action";
+
+	/**
+	 * Slackテンプレート登録の受付画面
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("/insert-action")
+	public String insertAction(Model model) {
+		model.addAttribute("cds", cdService.findByCategory(SLACK_CODE));
+		model.addAttribute("slack", new Slack());
+		model.addAttribute("action_jp", "登録");
+		model.addAttribute("action", "insert");
+		return "slack_action";
+	}
+
+	/**
+	 * Slackテンプレート登録処理
+	 * @param slack
+	 * @param model
+	 * @return
+	 */
+	@PostMapping("/insert/result")
+	public String insert(@Validated Slack slack, Model model) {
+
+		if (slackService.insertOrUpdate(slack)) {
+
+			return "redirect:/slack/insert-action?result=success";
+		} else {
+			return "redirect:/slack/insert-action?result=failure";
 		}
-	
-		/**
-		 * Slackテンプレート登録処理
-		 * @param slack
-		 * @param model
-		 * @return
-		 */
-		@PostMapping("/insert/result")
-		public String insert(@Validated Slack slack, Model model) {
-	
-			if (slackService.insertOrUpdate(slack)) {
-	
-				return "redirect:/slack/insert-action?result=success";
-			} else {
-				return "redirect:/slack/insert-action?result=failure";
-			}
+	}
+
+	/**
+	 * Slackテンプレート更新の受付画面
+	 * @param uid
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("/update-action/{uid}")
+	public String updateAction(@PathVariable String uid, Model model) {
+		model.addAttribute("cds", cdService.findByCategory(SLACK_CODE));
+		model.addAttribute("slack", slackService.findByUId(UUID.fromString(uid)));
+		model.addAttribute("action_jp", "編集");
+		model.addAttribute("action", "update");
+		return "slack_action";
+	}
+
+	/**
+	 * Slackテンプレート更新処理
+	 * @param slack
+	 * @param model
+	 * @return
+	 */
+	@PostMapping("/update/result")
+	public String update(@Validated Slack slack, Model model) {
+
+		if (slackService.insertOrUpdate(slack)) {
+
+			return "redirect:/slack/update-action/" + slack.getUid().toString() + "?result=success";
+		} else {
+			return "redirect:/slack/update-action/" + slack.getUid().toString() + "?result=failure";
 		}
-	
-		/**
-		 * Slackテンプレート更新の受付画面
-		 * @param uid
-		 * @param model
-		 * @return
-		 */
-		@GetMapping("/update-action/{uid}")
-		public String updateAction(@PathVariable String uid, Model model) {
-			model.addAttribute("cds", cdService.findByCategory(SLACK_CODE));
-			model.addAttribute("slack", slackService.findByUId(UUID.fromString(uid)));
-			model.addAttribute("action_jp", "編集");
-			model.addAttribute("action", "update");
-			return "slack_action";
-		}
-	
-		/**
-		 * Slackテンプレート更新処理
-		 * @param slack
-		 * @param model
-		 * @return
-		 */
-		@PostMapping("/update/result")
-		public String update(@Validated Slack slack, Model model) {
-	
-			if (slackService.insertOrUpdate(slack)) {
-	
-				return "redirect:/slack/update-action/" + slack.getUid().toString() + "?result=success";
-			} else {
-				return "redirect:/slack/update-action/" + slack.getUid().toString() + "?result=failure";
-			}
-		}
-	
-		/**
-		 * Slackテンプレート削除の受付画面
-		 * @param uid
-		 * @param model
-		 * @return
-		 */
-		@GetMapping("/delete-action/{uid}")
-		public String deleteActionBefore(@PathVariable String uid, Model model) {
-			model.addAttribute("cds", cdService.findByCategory(SLACK_CODE));
-			model.addAttribute("slack", slackService.findByUId(UUID.fromString(uid)));
-			model.addAttribute("action_jp", "削除");
-			model.addAttribute("action", "delete");
-			return "slack_action";
-		}
-	
-		/**
-		 * Slackテンプレート削除後のリダイレクト先
-		 * @param model
-		 * @return
-		 */
-		@GetMapping("/delete-action")
-		public String deleteActionAfter(Model model) {
-			model.addAttribute("cds", cdService.findByCategory(SLACK_CODE));
-			model.addAttribute("slack", new Slack());
-			model.addAttribute("action_jp", "削除");
-			model.addAttribute("action", "delete");
-			return "slack_action";
-		}
-	
-		/**
-		 * Slackテンプレート削除処理
-		 * @param slack
-		 * @param model
-		 * @return
-		 */
-		@PostMapping("/delete/result")
-		public String delete(@Validated Slack slack, Model model) {
-			slackService.delete(slack);
-			return "redirect:/slack/delete-action?result=success";
-	
-		}
+	}
+
+	/**
+	 * Slackテンプレート削除の受付画面
+	 * @param uid
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("/delete-action/{uid}")
+	public String deleteActionBefore(@PathVariable String uid, Model model) {
+		model.addAttribute("cds", cdService.findByCategory(SLACK_CODE));
+		model.addAttribute("slack", slackService.findByUId(UUID.fromString(uid)));
+		model.addAttribute("action_jp", "削除");
+		model.addAttribute("action", "delete");
+		return "slack_action";
+	}
+
+	/**
+	 * Slackテンプレート削除後のリダイレクト先
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("/delete-action")
+	public String deleteActionAfter(Model model) {
+		model.addAttribute("cds", cdService.findByCategory(SLACK_CODE));
+		model.addAttribute("slack", new Slack());
+		model.addAttribute("action_jp", "削除");
+		model.addAttribute("action", "delete");
+		return "slack_action";
+	}
+
+	/**
+	 * Slackテンプレート削除処理
+	 * @param slack
+	 * @param model
+	 * @return
+	 */
+	@PostMapping("/delete/result")
+	public String delete(@Validated Slack slack, Model model) {
+		slackService.delete(slack);
+		return "redirect:/slack/delete-action?result=success";
+
+	}
 }

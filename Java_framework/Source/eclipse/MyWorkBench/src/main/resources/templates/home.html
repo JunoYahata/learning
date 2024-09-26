@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>HOME</title>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="http://localhost:8080/common.css" />
+	<link rel="stylesheet" href="http://localhost:8080/home/home.css" />
+	<script defer src="http://localhost:8080/home/home.js"></script>
+</head>
+
+<body>
+	<span>メモ一覧</span>
+	<span class=".result"></span>
+	<div class="status_selector">
+		<button class="memo insert_button frame simple">
+			+
+		</button>
+		<button class="left_button frame simple hidden" id="memo_left" data-idh="#memo_">
+			＜
+		</button>
+		<div class="horizontal_scrolling" id="memo_status">
+			<th:block th:each="memo : ${memos}" th:object="${memo}">
+				<div class="frame">
+					<p th:text="*{title}"></p>
+					<p th:text="*{details}"></p>
+					<input type="button" class="memo update_button" th:data-uid="*{uid}">
+					<input type="button" class="memo delete_button" th:data-uid="*{uid}">
+				</div>
+			</th:block>
+		</div>
+		<button class="right_button frame simple" id="memo_right" data-idh="#memo_">
+			＞
+		</button>
+	</div>
+	<span>タスク一覧</span>
+	<span class=".result"></span>
+	<div class="status_selector">
+		<button class="task insert_button frame simple">
+			+
+		</button>
+		<button class="left_button frame simple hidden" id="task_left" data-idh="#task_">
+			＜
+		</button>
+		<div class="horizontal_scrolling" id="task_status">
+			<th:block th:each="task : ${tasks}" th:object="${task}">
+				<div class="frame">
+					<p th:text="*{title}"></p>
+					<p th:text="*{details}"></p>
+					<input type="button" class="task update_button" th:data-uid="*{uid}">
+					<input type="button" class="task copy_button" th:data-uid="*{uid}">
+				</div>
+			</th:block>
+		</div>
+		<button class="right_button frame simple" id="task_right" data-idh="#task_">
+			＞
+		</button>
+	</div>
+	<span>作業一覧</span>
+	<span class=".result"></span>
+	<div class="status_selector">
+		<button class="record insert_button frame simple">
+			+
+		</button>
+		<button class="left_button frame simple hidden" id="record_left" data-idh="#record_">
+			＜
+		</button>
+		<div class="horizontal_scrolling" id="record_status">
+			<th:block th:each="record : ${records}" th:object="${record}">
+				<div class="frame">
+					<p th:text="*{startTimeStr}"></p>
+					<p>～</p>
+					<p th:text="*{stopTimeStr}"></p>
+					<p th:text="*{memo}"></p>
+					<input type="button" class="record update_button" th:data-uid="*{uid}">
+					<input type="button" class="record delete_button" th:data-uid="*{uid}">
+				</div>
+			</th:block>
+		</div>
+		<button class="right_button frame simple" id="record_right" data-idh="#record_">
+			＞
+		</button>
+	</div>
+
+</body>
+
+</html>

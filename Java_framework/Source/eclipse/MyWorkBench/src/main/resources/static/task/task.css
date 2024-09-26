@@ -18,6 +18,7 @@ input.update_button {
 	height: 26px;
 	color: rgba(0, 0, 0, 0);
 	background-image: url(../img/pen.png);
+	cursor: pointer;
 }
 
 input.update_button:hover {
@@ -29,6 +30,7 @@ input.copy_button {
 	height: 26px;
 	color: rgba(0, 0, 0, 0);
 	background-image: url(../img/copy.png);
+	cursor: pointer;
 }
 
 input.copy_button:hover {
@@ -40,6 +42,7 @@ input.record_update_button {
 	height: 26px;
 	color: rgba(0, 0, 0, 0);
 	background-image: url(../img/pen.png);
+	cursor: pointer;
 }
 
 input.record_update_button:hover {
@@ -51,17 +54,11 @@ input.record_delete_button {
 	height: 26px;
 	color: rgba(0, 0, 0, 0);
 	background-image: url(../img/dustbox.png);
+	cursor: pointer;
 }
 
 input.record_delete_button:hover {
 	background-image: url(../img/dustbox_on.png);
-}
-
-dialog {
-	width: 450px;
-	height: 600px;
-	overflow: hidden;
-
 }
 
 div.task_title {
@@ -88,6 +85,9 @@ div.task_ol {
 	width: 99%;
 }
 
+label:has(input) {
+	cursor: pointer;
+}
 
 label:has(input:checked)+p {
 	display: none;
@@ -97,10 +97,8 @@ label:has(input:checked)+div {
 	display: none;
 }
 
-div.process_1{
-	
+div.process_1 {
 	display: flex;
-	
 }
 
 table {
@@ -113,5 +111,7 @@ table td:nth-of-type(1) {
 }
 
 table td:nth-of-type(2) {
-	text-align:right;
+	display: flex;
+	justify-content:
+		flex-end;
 }
