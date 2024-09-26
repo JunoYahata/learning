@@ -41,8 +41,10 @@ public class TaskController {
 	private final String CLASS_CODE = "20";
 	private final String INIT_TATUS_CODE = "0";
 
-	private final String SEED_ID = "";
-	private final String WORKPLACE_ID = "";
+	private final String SEED_ID = " Bearer ";
+	private final String WORKPLACE_ID = " Bearer ";
+
+	private final String MY_DM_ID = " Bearer ";
 
 	public String slackStatusPost(String Authorization, String... process) throws IOException, InterruptedException {
 		String bodyJsonString = new String();
@@ -68,6 +70,28 @@ public class TaskController {
 		BodyPublisher bodyPublisher = BodyPublishers.ofString(bodyJsonString);
 		HttpRequest request = HttpRequest.newBuilder(
 				URI.create("https://slack.com/api/users.profile.set"))
+				.header("Authorization", Authorization)
+				.header("Content-type", "application/json; charset=utf-8")
+				.POST(bodyPublisher)
+				.build();
+
+		HttpClient client = HttpClient.newHttpClient();
+		String response = client.send(request, BodyHandlers.ofString()).body();
+
+		return response;
+	}
+
+	public String messageToMyDM(String Authorization, String message) throws IOException, InterruptedException {
+		String bodyJsonString = ""
+				+ "{"
+				+ "\"channel\": \"D07C1JNKZBJ\" "
+				+ ", "
+				+ "\"text\": \"" + message + "\" "
+				+ "}";
+
+		BodyPublisher bodyPublisher = BodyPublishers.ofString(bodyJsonString);
+		HttpRequest request = HttpRequest.newBuilder(
+				URI.create("https://slack.com/api/chat.meMessage"))
 				.header("Authorization", Authorization)
 				.header("Content-type", "application/json; charset=utf-8")
 				.POST(bodyPublisher)
@@ -255,6 +279,7 @@ public class TaskController {
 	public String processStartAction(@RequestParam(name = "uid") String uid, Model model) {
 
 		RecordTemp recordTemp = recordTempService.find();
+		String changeMessage = new String();
 		if (recordTemp != null) {
 			processService.setStatusStop(recordTemp.getProcessUid());
 			Record record = new Record();
@@ -271,6 +296,7 @@ public class TaskController {
 				e.printStackTrace();
 			}
 			recordTempService.deleteAll();
+			changeMessage = "作業を変更。";
 		}
 		Process process = processService.findByUId(UUID.fromString(uid));
 		recordTemp = new RecordTemp();
@@ -288,6 +314,7 @@ public class TaskController {
 				slackStatusPost(WORKPLACE_ID, "[" + task.getTitleShort() + "]", process.getTitle() + " 作業中",
 						process.getEmoji());
 			}
+			messageToMyDM(MY_DM_ID, changeMessage + "[" + task.getTitleShort() + "]" + process.getTitle() + " 作業開始");
 		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -314,6 +341,7 @@ public class TaskController {
 			try {
 				slackStatusPost(SEED_ID);
 				slackStatusPost(WORKPLACE_ID);
+				messageToMyDM(MY_DM_ID,"作業中止。");
 
 			} catch (IOException | InterruptedException e) {
 				e.printStackTrace();
@@ -344,6 +372,7 @@ public class TaskController {
 			try {
 				slackStatusPost(SEED_ID);
 				slackStatusPost(WORKPLACE_ID);
+				messageToMyDM(MY_DM_ID,"作業完了。");
 
 			} catch (IOException | InterruptedException e) {
 				e.printStackTrace();

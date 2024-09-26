@@ -27,8 +27,8 @@ import com.myworkbench.service.SlackService;
 @RequestMapping("/slack")
 public class SlackController {
 
-	private final String SEED_ID = "";
-	private final String WORKPLACE_ID = "";
+	private final String SEED_ID = " Bearer ";
+	private final String WORKPLACE_ID = " Bearer ";
 
 	private final String SLACK_CODE = "50";
 
