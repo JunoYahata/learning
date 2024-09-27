@@ -5,13 +5,43 @@
     "description": "A description for 'token.seed.status'"
   },
   {
+    "name": "token.seed.chat",
+    "type": "java.lang.String",
+    "description": "A description for 'token.seed.chat'"
+  },
+  {
     "name": "token.workplace.status",
     "type": "java.lang.String",
     "description": "A description for 'token.workplace.status'"
   },
   {
-    "name": "token.mydm.chat",
+    "name": "token.workplace.chat",
     "type": "java.lang.String",
-    "description": "A description for 'token.mydm.chat'"
+    "description": "A description for 'token.workplace.chat'"
+  },
+  {
+    "name": "id.seed.mydm.chat",
+    "type": "java.lang.String",
+    "description": "A description for 'id.seed.mydm.chat'"
+  },
+  {
+    "name": "id.seed.channel.chat",
+    "type": "java.lang.String",
+    "description": "A description for 'id.seed.channel.chat'"
+  },
+  {
+    "name": "id.workplace.mydm.chat",
+    "type": "java.lang.String",
+    "description": "A description for 'id.workplace.mydm.chat'"
+  },
+  {
+    "name": "id.workplace.channel.chat",
+    "type": "java.lang.String",
+    "description": "A description for 'id.workplace.channel.chat'"
+  },
+  {
+    "name": "user.timezone",
+    "type": "java.lang.String",
+    "description": "A description for 'user.timezone'"
   }
 ]}

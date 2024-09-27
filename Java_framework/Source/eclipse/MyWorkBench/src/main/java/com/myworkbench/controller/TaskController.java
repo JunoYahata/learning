@@ -38,6 +38,17 @@ import com.myworkbench.service.TaskService;
 @RequestMapping("/task")
 public class TaskController {
 
+	@Autowired
+	CdService cdService;
+	@Autowired
+	TaskService taskService;
+	@Autowired
+	ProcessService processService;
+	@Autowired
+	RecordService recordService;
+	@Autowired
+	RecordTempService recordTempService;
+
 	private final String TAG_CODE = "10";
 	private final String CLASS_CODE = "20";
 	private final String INIT_TATUS_CODE = "0";
@@ -46,12 +57,29 @@ public class TaskController {
 	private String seedToken;
 	@Value("${token.workplace.status}")
 	private String workPlaceToken;
-	@Value("${token.mydm.chat}")
-	private String seedMyDMToken;
+	@Value("${token.seed.chat}")
+	private String seedChatToken;
+	@Value("${token.workplace.chat}")
+	private String workPlaceChatToken;
+
+	@Value("${id.seed.mydm.chat}")
+	private String seedMyDMId;
+	@Value("${id.seed.channel.chat}")
+	private String seedMyChannelId;
+	@Value("${id.workplace.mydm.chat}")
+	private String workPlaceMyDMId;
+	@Value("${id.workplace.channel.chat}")
+	private String workPlaceMyChannelId;
 
 	public String slackStatusPost(String Authorization, String... process) throws IOException, InterruptedException {
+
+		if (Authorization.length() == 0) {
+			System.out.println("NoToken");
+			return "NoToken";
+		}
 		String bodyJsonString = new String();
-		if (process.length < 3) {
+		if (process.length != 2) {
+
 			bodyJsonString = ""
 					+ "{"
 					+ "\"profile\": {"
@@ -64,9 +92,9 @@ public class TaskController {
 			bodyJsonString = ""
 					+ "{"
 					+ "\"profile\": {"
-					+ "\"status_text\": \"" + process[0] + process[1] + "\""
+					+ "\"status_text\": \"" + process[0] + "\""
 					+ ", "
-					+ "\"status_emoji\": \"" + process[2] + "\""
+					+ "\"status_emoji\": \"" + process[1] + "\""
 					+ "}"
 					+ "}";
 		}
@@ -84,10 +112,17 @@ public class TaskController {
 		return response;
 	}
 
-	public String messageToMyDM(String Authorization, String message) throws IOException, InterruptedException {
+	public String messageToChat(String Authorization, String id, String message)
+			throws IOException, InterruptedException {
+
+		if (Authorization.length() == 0 || id.length() == 0) {
+			System.out.println("NoTokenOrId");
+			return "NoTokenOrId";
+		}
+
 		String bodyJsonString = ""
 				+ "{"
-				+ "\"channel\": \"D07C1JNKZBJ\" "
+				+ "\"channel\": \"" + id + "\" "
 				+ ", "
 				+ "\"text\": \"" + message + "\" "
 				+ "}";
@@ -105,17 +140,6 @@ public class TaskController {
 
 		return response;
 	}
-
-	@Autowired
-	CdService cdService;
-	@Autowired
-	TaskService taskService;
-	@Autowired
-	ProcessService processService;
-	@Autowired
-	RecordService recordService;
-	@Autowired
-	RecordTempService recordTempService;
 
 	/**
 	 * メインページ
@@ -282,7 +306,10 @@ public class TaskController {
 	public String processStartAction(@RequestParam(name = "uid") String uid, Model model) {
 
 		RecordTemp recordTemp = recordTempService.find();
-		String changeMessage = new String();
+		String message = new String();
+		String changeMessage = "作業を変更します。";
+		String stopMessage = "休憩もしくは別作業発生により中止";
+		String oldProcessTagCd = new String();
 		if (recordTemp != null) {
 			processService.setStatusStop(recordTemp.getProcessUid());
 			Record record = new Record();
@@ -291,6 +318,7 @@ public class TaskController {
 			record.setStopTime(new Timestamp(System.currentTimeMillis()));
 			record.setMemo("");
 			recordService.insertOrUpdate(record);
+			oldProcessTagCd = taskService.findByUId(recordTemp.getTaskUid()).getTagCd();
 			try {
 				slackStatusPost(seedToken);
 				slackStatusPost(workPlaceToken);
@@ -299,7 +327,6 @@ public class TaskController {
 				e.printStackTrace();
 			}
 			recordTempService.deleteAll();
-			changeMessage = "作業を変更。";
 		}
 		Process process = processService.findByUId(UUID.fromString(uid));
 		recordTemp = new RecordTemp();
@@ -308,17 +335,48 @@ public class TaskController {
 		recordTemp.setStartTime(new Timestamp(System.currentTimeMillis()));
 		recordTempService.insert(recordTemp);
 		processService.setStatusStart(UUID.fromString(uid));
-		Task task = taskService.findByUId(process.getPaUid());
+		Task newTask = taskService.findByUId(process.getPaUid());
+		String taskData = "[" + newTask.getTitleShort() + "]" + process.getTitle();
 		try {
-			if (task.getTagCd().equals("20")) {
-				slackStatusPost(seedToken, "[" + task.getTitleShort() + "]", process.getTitle() + " 作業中",
-						process.getEmoji());
-			} else if (task.getTagCd().equals("30")) {
-				slackStatusPost(workPlaceToken, "[" + task.getTitleShort() + "]", process.getTitle() + " 作業中",
-						process.getEmoji());
+
+			if (newTask.getTagCd().equals("20")) {
+
+				slackStatusPost(seedToken, taskData + " 作業中", process.getEmoji());
+
+				if (oldProcessTagCd.length() > 0 && oldProcessTagCd.equals("20")) {
+
+					message = changeMessage;
+
+				} else if (oldProcessTagCd.length() > 0 && oldProcessTagCd.equals("30")) {
+
+					messageToChat(workPlaceToken, workPlaceMyDMId, stopMessage);
+					messageToChat(workPlaceToken, workPlaceMyChannelId, stopMessage);
+
+				}
+
+				messageToChat(seedChatToken, seedMyDMId, message + taskData + " 作業開始");
+				messageToChat(seedChatToken, seedMyChannelId, message + taskData + " 作業開始");
+
+			} else if (newTask.getTagCd().equals("30")) {
+
+				slackStatusPost(workPlaceToken, taskData + " 作業中", process.getEmoji());
+
+				if (oldProcessTagCd.length() > 0 && oldProcessTagCd.equals("20")) {
+
+					messageToChat(seedChatToken, seedMyDMId, stopMessage);
+					messageToChat(seedChatToken, seedMyChannelId, stopMessage);
+
+				} else if (oldProcessTagCd.length() > 0 && oldProcessTagCd.equals("30")) {
+
+					message = changeMessage;
+
+				}
+
+				messageToChat(workPlaceToken, workPlaceMyDMId, message + taskData + " 作業開始");
+				messageToChat(workPlaceToken, workPlaceMyChannelId, message + taskData + " 作業開始");
+
 			}
-			messageToMyDM(seedMyDMToken,
-					changeMessage + "[" + task.getTitleShort() + "]" + process.getTitle() + " 作業開始");
+
 		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -334,6 +392,7 @@ public class TaskController {
 	@PostMapping("/process-stop-action/")
 	public String processStopAction(@RequestParam(name = "uid") String uid, Model model) {
 		RecordTemp recordTemp = recordTempService.find();
+		String stopMessage = "作業休止。";
 
 		if (recordTemp != null && recordTemp.getProcessUid().toString().equals(uid)) {
 			Record record = new Record();
@@ -342,11 +401,21 @@ public class TaskController {
 			record.setStopTime(new Timestamp(System.currentTimeMillis()));
 			record.setMemo("");
 			recordService.insertOrUpdate(record);
+			String tagCd = taskService.findByUId(recordTemp.getTaskUid()).getTagCd();
 			try {
 				slackStatusPost(seedToken);
 				slackStatusPost(workPlaceToken);
-				messageToMyDM(seedMyDMToken, "作業中止。");
 
+				if (tagCd.equals("20")) {
+
+					messageToChat(seedChatToken, seedMyDMId, stopMessage);
+					messageToChat(seedChatToken, seedMyChannelId, stopMessage);
+
+				} else if (tagCd.equals("30")) {
+
+					messageToChat(workPlaceToken, workPlaceMyDMId, stopMessage);
+					messageToChat(workPlaceToken, workPlaceMyChannelId, stopMessage);
+				}
 			} catch (IOException | InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -366,6 +435,7 @@ public class TaskController {
 	@PostMapping("/process-complete-action/")
 	public String processCompleteAction(@RequestParam(name = "uid") String uid, Model model) {
 		RecordTemp recordTemp = recordTempService.find();
+		String completeMessage = "作業完了。";
 		if (recordTemp != null && recordTemp.getProcessUid().toString().equals(uid)) {
 			Record record = new Record();
 			record.setPaUid(recordTemp.getProcessUid());
@@ -373,11 +443,21 @@ public class TaskController {
 			record.setStopTime(new Timestamp(System.currentTimeMillis()));
 			record.setMemo("");
 			recordService.insertOrUpdate(record);
+			String tagCd = taskService.findByUId(recordTemp.getTaskUid()).getTagCd();
 			try {
 				slackStatusPost(seedToken);
 				slackStatusPost(workPlaceToken);
-				messageToMyDM(seedMyDMToken, "作業完了。");
 
+				if (tagCd.equals("20")) {
+
+					messageToChat(seedChatToken, seedMyDMId, completeMessage);
+					messageToChat(seedChatToken, seedMyChannelId, completeMessage);
+
+				} else if (tagCd.equals("30")) {
+
+					messageToChat(workPlaceToken, workPlaceMyDMId, completeMessage);
+					messageToChat(workPlaceToken, workPlaceMyChannelId, completeMessage);
+				}
 			} catch (IOException | InterruptedException e) {
 				e.printStackTrace();
 			}

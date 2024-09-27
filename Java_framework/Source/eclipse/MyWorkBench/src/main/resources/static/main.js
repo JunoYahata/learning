@@ -70,7 +70,7 @@ function dialogClose() {
 		}
 	});
 	document.querySelector('.dialog').close();
-	window.location.href = url + '?tab=' + currentTab;
+	window.location.href = '?tab=' + currentTab;
 
 }
 

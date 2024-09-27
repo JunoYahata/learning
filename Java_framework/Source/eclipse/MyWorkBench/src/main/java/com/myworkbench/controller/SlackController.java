@@ -7,6 +7,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.BodyPublisher;
 import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpResponse.BodyHandlers;
+import java.sql.Timestamp;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +21,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.myworkbench.model.Record;
+import com.myworkbench.model.RecordTemp;
 import com.myworkbench.model.Slack;
 import com.myworkbench.service.CdService;
+import com.myworkbench.service.ProcessService;
+import com.myworkbench.service.RecordService;
+import com.myworkbench.service.RecordTempService;
 import com.myworkbench.service.SlackService;
+import com.myworkbench.service.TaskService;
 
 @Controller
 @RequestMapping("/slack")
@@ -32,6 +39,19 @@ public class SlackController {
 	private String seedToken;
 	@Value("${token.workplace.status}")
 	private String workPlaceToken;
+	@Value("${token.seed.chat}")
+	private String seedChatToken;
+	@Value("${token.workplace.chat}")
+	private String workPlaceChatToken;
+
+	@Value("${id.seed.mydm.chat}")
+	private String seedMyDMId;
+	@Value("${id.seed.channel.chat}")
+	private String seedMyChannelId;
+	@Value("${id.workplace.mydm.chat}")
+	private String workPlaceMyDMId;
+	@Value("${id.workplace.channel.chat}")
+	private String workPlaceMyChannelId;
 
 	private final String SLACK_CODE = "50";
 
@@ -39,9 +59,21 @@ public class SlackController {
 	CdService cdService;
 	@Autowired
 	SlackService slackService;
+	@Autowired
+	RecordTempService recordTempService;
+	@Autowired
+	RecordService recordService;
+	@Autowired
+	ProcessService processService;
+	@Autowired
+	TaskService taskService;
 
 	public String slackStatusPost(String Authorization, Slack slack) throws IOException, InterruptedException {
 
+		if (Authorization.length() == 0) {
+			System.out.println("NoToken");
+			return "NoToken";
+		}
 		slack.calcEpochTime();
 		String bodyJsonString = ""
 				+ "{"
@@ -57,6 +89,35 @@ public class SlackController {
 		BodyPublisher bodyPublisher = BodyPublishers.ofString(bodyJsonString);
 		HttpRequest request = HttpRequest.newBuilder(
 				URI.create("https://slack.com/api/users.profile.set"))
+				.header("Authorization", " Bearer " + Authorization)
+				.header("Content-type", "application/json; charset=utf-8")
+				.POST(bodyPublisher)
+				.build();
+
+		HttpClient client = HttpClient.newHttpClient();
+		String response = client.send(request, BodyHandlers.ofString()).body();
+
+		return response;
+	}
+
+	public String messageToChat(String Authorization, String id, String message)
+			throws IOException, InterruptedException {
+
+		if (Authorization.length() == 0 || id.length() == 0) {
+			System.out.println("NoTokenOrId");
+			return "NoTokenOrId";
+		}
+
+		String bodyJsonString = ""
+				+ "{"
+				+ "\"channel\": \"" + id + "\" "
+				+ ", "
+				+ "\"text\": \"" + message + "\" "
+				+ "}";
+
+		BodyPublisher bodyPublisher = BodyPublishers.ofString(bodyJsonString);
+		HttpRequest request = HttpRequest.newBuilder(
+				URI.create("https://slack.com/api/chat.meMessage"))
 				.header("Authorization", " Bearer " + Authorization)
 				.header("Content-type", "application/json; charset=utf-8")
 				.POST(bodyPublisher)
@@ -88,10 +149,27 @@ public class SlackController {
 	 */
 	@PostMapping("/status-update/SeeD")
 	public String slackSEED(@Validated Slack slack) {
-
 		String result = "";
-
 		try {
+			RecordTemp recordTemp = recordTempService.find();
+			if (recordTemp != null) {
+				String oldProcessTagCd = taskService.findByUId(recordTemp.getTaskUid()).getTagCd();
+				if (oldProcessTagCd.equals("20")) {
+
+					String stopMessage = "休憩もしくは別作業発生により中止";
+					processService.setStatusStop(recordTemp.getProcessUid());
+					Record record = new Record();
+					record.setPaUid(recordTemp.getProcessUid());
+					record.setStartTime(recordTemp.getStartTime());
+					record.setStopTime(new Timestamp(System.currentTimeMillis()));
+					record.setMemo(new String());
+					recordService.insertOrUpdate(record);
+					recordTempService.deleteAll();
+
+					messageToChat(seedChatToken, seedMyDMId, stopMessage);
+					messageToChat(seedChatToken, seedMyChannelId, stopMessage);
+				}
+			}
 			slackStatusPost(seedToken, slack);
 			result = "success";
 		} catch (Exception e) {
@@ -110,10 +188,26 @@ public class SlackController {
 	 */
 	@PostMapping("/status-update/work-place")
 	public String slackWorkplace(@Validated Slack slack) {
-
 		String result = "";
-
 		try {
+			RecordTemp recordTemp = recordTempService.find();
+			if (recordTemp != null) {
+				String oldProcessTagCd = taskService.findByUId(recordTemp.getTaskUid()).getTagCd();
+				if (oldProcessTagCd.equals("30")) {
+					String stopMessage = "休憩もしくは別作業発生により中止";
+					processService.setStatusStop(recordTemp.getProcessUid());
+					Record record = new Record();
+					record.setPaUid(recordTemp.getProcessUid());
+					record.setStartTime(recordTemp.getStartTime());
+					record.setStopTime(new Timestamp(System.currentTimeMillis()));
+					record.setMemo(new String());
+					recordService.insertOrUpdate(record);
+					recordTempService.deleteAll();
+
+					messageToChat(workPlaceToken, workPlaceMyDMId, stopMessage);
+					messageToChat(workPlaceToken, workPlaceMyChannelId, stopMessage);
+				}
+			}
 			slackStatusPost(workPlaceToken, slack);
 			result = "success";
 		} catch (Exception e) {

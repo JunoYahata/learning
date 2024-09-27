@@ -1,5 +1,6 @@
 package com.myworkbench.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -117,6 +118,7 @@ public class TaskService {
 
 		Task task = taskRepository.findById(uid).orElseThrow();
 		task.setStatusCd("1");
+		task.setStartDate((java.sql.Date) new Date());
 		return taskRepository.save(task);
 	}
 
@@ -124,6 +126,7 @@ public class TaskService {
 
 		Task task = taskRepository.findById(uid).orElseThrow();
 		task.setStatusCd("2");
+		task.setEndDate((java.sql.Date) new Date());
 		return taskRepository.save(task);
 	}
 
