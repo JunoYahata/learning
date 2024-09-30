@@ -1,6 +1,7 @@
 package com.myworkbench.service;
 
-import java.util.Date;
+import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -100,7 +101,7 @@ public class TaskService {
 					record.setTimesStr();
 					record.setProcess(process);
 				}
-				
+
 				process.setRecords(records);
 
 				// プロセスにタスクを紐づける
@@ -118,7 +119,11 @@ public class TaskService {
 
 		Task task = taskRepository.findById(uid).orElseThrow();
 		task.setStatusCd("1");
-		task.setStartDate((java.sql.Date) new Date());
+		LocalDateTime dateTime = LocalDateTime.now();
+		String today = "" + dateTime.getYear() + "-"
+				+ (dateTime.getMonthValue() > 9 ? dateTime.getMonthValue() : "0" + dateTime.getMonthValue()) + "-"
+				+ (dateTime.getDayOfMonth() > 9 ? dateTime.getDayOfMonth() : "0" + dateTime.getDayOfMonth());
+		task.setStartDate(Date.valueOf(today));
 		return taskRepository.save(task);
 	}
 
@@ -126,7 +131,11 @@ public class TaskService {
 
 		Task task = taskRepository.findById(uid).orElseThrow();
 		task.setStatusCd("2");
-		task.setEndDate((java.sql.Date) new Date());
+		LocalDateTime dateTime = LocalDateTime.now();
+		String today = "" + dateTime.getYear() + "-"
+				+ (dateTime.getMonthValue() > 9 ? dateTime.getMonthValue() : "0" + dateTime.getMonthValue()) + "-"
+				+ (dateTime.getDayOfMonth() > 9 ? dateTime.getDayOfMonth() : "0" + dateTime.getDayOfMonth());	
+		task.setEndDate(Date.valueOf(today));
 		return taskRepository.save(task);
 	}
 

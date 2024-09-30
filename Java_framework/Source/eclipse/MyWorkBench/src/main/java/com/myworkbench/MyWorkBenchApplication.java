@@ -18,7 +18,7 @@ public class MyWorkBenchApplication {
 
 	@PostConstruct
 	public void init() {
-		TimeZone.setDefault(TimeZone.getTimeZone("JST"));
+		TimeZone.setDefault(TimeZone.getTimeZone("Japan"));
 	}
 
 }

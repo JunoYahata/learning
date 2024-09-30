@@ -14,6 +14,7 @@ body {
 
 header {
 	grid-area: A;
+	display: flex;
 	background-color: darkgreen;
 	color: black;
 	font-size: 20px;

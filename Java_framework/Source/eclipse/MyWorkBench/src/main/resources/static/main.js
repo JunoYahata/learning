@@ -27,9 +27,29 @@ if (Boolean(tab)) {
 	document.querySelector('#' + tab + '_contents').classList.remove('hidden');
 	document.querySelector('#' + tab + '_radio').checked = true;
 }
+const task_id = url.searchParams.get("task_id");
 
+if (Boolean(task_id)) {
+	document.querySelector('#task_contents').firstElementChild.src ="task/?id="+task_id;
+}
 
+setInterval(function() {
+	const time = document.querySelector('.now_day_time');
+	const now = new Date();
 
+// 各要素を取得
+const year = now.getFullYear();
+const month = now.getMonth() + 1; // 月は0から始まるので1を加算
+const date = now.getDate();
+const hours = now.getHours();
+const minutes = now.getMinutes();
+const seconds = now.getSeconds();
+
+// 結果を表示
+//console.log(`${year}年${month}月${date}日 ${hours}時${minutes}分${seconds}秒`);
+	time.textContent = year+"年"+month+"月"+date+"日 "+hours+":"+minutes;
+
+}, 1000);
 
 
 

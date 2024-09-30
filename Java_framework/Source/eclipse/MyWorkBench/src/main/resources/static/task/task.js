@@ -55,4 +55,12 @@ document.querySelectorAll('.record_delete_button').forEach((ol) => {
 	});
 });
 
+const id = url.searchParams.get("id");
 
+if (Boolean(id)) {
+		document.querySelector('#mb_' + id).classList.toggle('hidden');
+		document.querySelector('#db_' + id).classList.toggle('hidden');
+		document.querySelector('#ub_' + id).classList.toggle('hidden');
+		
+		window.location.hash = '#ub_' + id;
+}

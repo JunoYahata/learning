@@ -77,12 +77,19 @@ div.task_ol {
 	width: 99%;
 }
 
-.task {
-	padding: 5px;
+.task_outline {
+	background-color: black;
+	color: aliceblue;
+	text-align: left;
+	cursor: pointer;
 }
 
-.task_outline {
-	width: 99%;
+label {
+	cursor: pointer;
+}
+
+.task {
+	padding: 5px;
 }
 
 label:has(input) {

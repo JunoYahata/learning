@@ -21,11 +21,10 @@ document.querySelectorAll('.left_button').forEach((ol) => {
 			if (dvel.scrollLeft < 550) {
 				dvel.scrollLeft = 0;
 				ol.classList.add('hidden');
-				rel.classList.remove('hidden');
 			} else {
 				dvel.scrollLeft = dvel.scrollLeft - 550;
-				rel.classList.remove('hidden');
 			}
+			rel.classList.remove('hidden');
 		}
 
 	});
@@ -38,16 +37,15 @@ document.querySelectorAll('.right_button').forEach((ol) => {
 		const scrollable = dvel.scrollWidth - 550;
 		if (scrollable < 0) {
 			ol.classList.add('hidden');
-			rel.classList.add('hidden');
+			lel.classList.add('hidden');
 		} else {
 			if (scrollable - dvel.scrollLeft < 550) {
 				dvel.scrollLeft = scrollable;
 				ol.classList.add('hidden');
-				lel.classList.remove('hidden');
 			} else {
 				dvel.scrollLeft = dvel.scrollLeft + 550;
-				lel.classList.remove('hidden');
 			}
+			lel.classList.remove('hidden');
 		}
 	});
 });

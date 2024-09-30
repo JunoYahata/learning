@@ -280,7 +280,7 @@ public class TaskController {
 	public String startAction(@RequestParam(name = "uid") String uid, Model model) {
 
 		taskService.setStatusStart(UUID.fromString(uid));
-		return "redirect:/task/";
+		return "redirect:/task/?id=" + uid;
 	}
 
 	/**
@@ -293,7 +293,7 @@ public class TaskController {
 	public String completeAction(@RequestParam(name = "uid") String uid, Model model) {
 
 		taskService.setStatusComplete(UUID.fromString(uid));
-		return "redirect:/task/";
+		return "redirect:/task/?id=" + uid;
 	}
 
 	/**
@@ -303,7 +303,8 @@ public class TaskController {
 	 * @return
 	 */
 	@PostMapping("/process-start-action/")
-	public String processStartAction(@RequestParam(name = "uid") String uid, Model model) {
+	public String processStartAction(@RequestParam(name = "uid") String uid, @RequestParam(name = "memo") String memo,
+			Model model) {
 
 		RecordTemp recordTemp = recordTempService.find();
 		String message = new String();
@@ -316,7 +317,7 @@ public class TaskController {
 			record.setPaUid(recordTemp.getProcessUid());
 			record.setStartTime(recordTemp.getStartTime());
 			record.setStopTime(new Timestamp(System.currentTimeMillis()));
-			record.setMemo("");
+			record.setMemo(memo);
 			recordService.insertOrUpdate(record);
 			oldProcessTagCd = taskService.findByUId(recordTemp.getTaskUid()).getTagCd();
 			try {
@@ -336,6 +337,11 @@ public class TaskController {
 		recordTempService.insert(recordTemp);
 		processService.setStatusStart(UUID.fromString(uid));
 		Task newTask = taskService.findByUId(process.getPaUid());
+		String taskUid = "?id=" + newTask.getUid().toString();
+
+		if (newTask.getStatusCd().equals("0")) {
+			taskService.setStatusStart(newTask.getUid());
+		}
 		String taskData = "[" + newTask.getTitleShort() + "]" + process.getTitle();
 		try {
 
@@ -345,11 +351,16 @@ public class TaskController {
 
 				if (oldProcessTagCd.length() > 0 && oldProcessTagCd.equals("20")) {
 
+					messageToChat(seedChatToken, seedMyDMId, "作業メモ：" + memo);
+					messageToChat(seedChatToken, seedMyChannelId, "作業メモ：" + memo);
+
 					message = changeMessage;
 
 				} else if (oldProcessTagCd.length() > 0 && oldProcessTagCd.equals("30")) {
 
+					messageToChat(workPlaceToken, workPlaceMyDMId, "作業メモ：" + memo);
 					messageToChat(workPlaceToken, workPlaceMyDMId, stopMessage);
+					messageToChat(workPlaceToken, workPlaceMyChannelId, "作業メモ：" + memo);
 					messageToChat(workPlaceToken, workPlaceMyChannelId, stopMessage);
 
 				}
@@ -362,12 +373,17 @@ public class TaskController {
 				slackStatusPost(workPlaceToken, taskData + " 作業中", process.getEmoji());
 
 				if (oldProcessTagCd.length() > 0 && oldProcessTagCd.equals("20")) {
-
+					
+					messageToChat(seedChatToken, seedMyDMId, "作業メモ：" + memo);
 					messageToChat(seedChatToken, seedMyDMId, stopMessage);
+					messageToChat(seedChatToken, seedMyChannelId, "作業メモ：" + memo);
 					messageToChat(seedChatToken, seedMyChannelId, stopMessage);
 
 				} else if (oldProcessTagCd.length() > 0 && oldProcessTagCd.equals("30")) {
-
+					
+					messageToChat(workPlaceToken, workPlaceMyDMId, "作業メモ：" + memo);
+					messageToChat(workPlaceToken, workPlaceMyChannelId, "作業メモ：" + memo);
+					
 					message = changeMessage;
 
 				}
@@ -380,7 +396,7 @@ public class TaskController {
 		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();
 		}
-		return "redirect:/task/";
+		return "redirect:/task/" + taskUid;
 	}
 
 	/**
@@ -390,30 +406,36 @@ public class TaskController {
 	 * @return
 	 */
 	@PostMapping("/process-stop-action/")
-	public String processStopAction(@RequestParam(name = "uid") String uid, Model model) {
+	public String processStopAction(@RequestParam(name = "uid") String uid, @RequestParam(name = "memo") String memo,
+			Model model) {
 		RecordTemp recordTemp = recordTempService.find();
 		String stopMessage = "作業休止。";
+		String taskUid = new String();
 
 		if (recordTemp != null && recordTemp.getProcessUid().toString().equals(uid)) {
 			Record record = new Record();
 			record.setPaUid(recordTemp.getProcessUid());
 			record.setStartTime(recordTemp.getStartTime());
 			record.setStopTime(new Timestamp(System.currentTimeMillis()));
-			record.setMemo("");
+			record.setMemo(memo);
 			recordService.insertOrUpdate(record);
 			String tagCd = taskService.findByUId(recordTemp.getTaskUid()).getTagCd();
+			taskUid = "?id=" + taskService.findByUId(recordTemp.getTaskUid()).getUid().toString();
 			try {
 				slackStatusPost(seedToken);
 				slackStatusPost(workPlaceToken);
 
 				if (tagCd.equals("20")) {
-
+					messageToChat(seedChatToken, seedMyDMId, "作業メモ：" + memo);
 					messageToChat(seedChatToken, seedMyDMId, stopMessage);
+					messageToChat(seedChatToken, seedMyChannelId, "作業メモ：" + memo);
 					messageToChat(seedChatToken, seedMyChannelId, stopMessage);
 
 				} else if (tagCd.equals("30")) {
 
+					messageToChat(workPlaceToken, workPlaceMyDMId, "作業開始メモ：" + memo);
 					messageToChat(workPlaceToken, workPlaceMyDMId, stopMessage);
+					messageToChat(workPlaceToken, workPlaceMyChannelId, "作業開始メモ：" + memo);
 					messageToChat(workPlaceToken, workPlaceMyChannelId, stopMessage);
 				}
 			} catch (IOException | InterruptedException e) {
@@ -423,7 +445,7 @@ public class TaskController {
 		}
 
 		processService.setStatusStop(UUID.fromString(uid));
-		return "redirect:/task/";
+		return "redirect:/task/" + taskUid;
 	}
 
 	/**
@@ -433,29 +455,35 @@ public class TaskController {
 	 * @return
 	 */
 	@PostMapping("/process-complete-action/")
-	public String processCompleteAction(@RequestParam(name = "uid") String uid, Model model) {
+	public String processCompleteAction(@RequestParam(name = "uid") String uid,
+			@RequestParam(name = "memo") String memo, Model model) {
 		RecordTemp recordTemp = recordTempService.find();
 		String completeMessage = "作業完了。";
+		String taskUid = new String();
 		if (recordTemp != null && recordTemp.getProcessUid().toString().equals(uid)) {
 			Record record = new Record();
 			record.setPaUid(recordTemp.getProcessUid());
 			record.setStartTime(recordTemp.getStartTime());
 			record.setStopTime(new Timestamp(System.currentTimeMillis()));
-			record.setMemo("");
+			record.setMemo(memo);
 			recordService.insertOrUpdate(record);
 			String tagCd = taskService.findByUId(recordTemp.getTaskUid()).getTagCd();
+			taskUid = "?id=" + taskService.findByUId(recordTemp.getTaskUid()).getUid().toString();
+
 			try {
 				slackStatusPost(seedToken);
 				slackStatusPost(workPlaceToken);
 
 				if (tagCd.equals("20")) {
-
+					messageToChat(seedChatToken, seedMyDMId, "作業メモ：" + memo);
 					messageToChat(seedChatToken, seedMyDMId, completeMessage);
+					messageToChat(seedChatToken, seedMyChannelId, "作業メモ：" + memo);
 					messageToChat(seedChatToken, seedMyChannelId, completeMessage);
 
 				} else if (tagCd.equals("30")) {
-
+					messageToChat(workPlaceToken, workPlaceMyDMId, "作業メモ：" + memo);
 					messageToChat(workPlaceToken, workPlaceMyDMId, completeMessage);
+					messageToChat(workPlaceToken, workPlaceMyChannelId, "作業メモ：" + memo);
 					messageToChat(workPlaceToken, workPlaceMyChannelId, completeMessage);
 				}
 			} catch (IOException | InterruptedException e) {
@@ -465,6 +493,6 @@ public class TaskController {
 		}
 
 		processService.setStatusComplete(UUID.fromString(uid));
-		return "redirect:/task/";
+		return "redirect:/task/" + taskUid;
 	}
 }

@@ -25,6 +25,15 @@ public class LinkController {
 	CdService cdService;
 	@Autowired
 	LinkService linkService;
+	
+	
+	@GetMapping("/")
+	public String test(Model model) {
+		model.addAttribute("message", "テスト画面！");
+		model.addAttribute("id", "fffffff");
+		return "temp";
+	}
+	
 
 	/**
 	 * リンク登録の受付画面

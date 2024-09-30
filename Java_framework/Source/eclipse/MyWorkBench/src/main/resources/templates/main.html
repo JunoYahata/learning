@@ -10,6 +10,13 @@
 </head>
 
 <body>
+	<dialog class="dialog">
+		<p class="hidden" id="dialog_message">成功しました<br>2秒後に自動で閉じます</p>
+		<iframe class="frame"></iframe>
+		<form method="dialog">
+			<input type="submit" value="閉じる">
+		</form>
+	</dialog>
 	<header>
 		<span>作業用ホームページ</span>
 	</header>
@@ -28,25 +35,22 @@
 				data-contents="#slack_contents">
 			<label for="slack_radio">SLACK</label>
 		</div>
-		<div class="contents" id="main_contents">		
-		<iframe src="home/"></iframe></div>
+		<div class="contents" id="main_contents">
+			<iframe src="home/"></iframe>
+		</div>
 		<div class="contents hidden" id="memo_contents">
 			<iframe src="memo/"></iframe>
 		</div>
 		<div class="contents hidden" id="task_contents">
 			<iframe src="task/"></iframe>
 		</div>
-		<div class="contents hidden" id="slack_contents">		
-		<iframe src="slack/"></iframe></div>
+		<div class="contents hidden" id="slack_contents">
+			<iframe src="slack/"></iframe>
+		</div>
 	</main>
 	<linkarea>
-		<dialog class="dialog">
-			<p class="hidden" id="dialog_message">成功しました<br>2秒後に自動で閉じます</p>
-			<iframe class="frame"></iframe>
-			<form method="dialog">
-				<input type="submit" value="閉じる">
-			</form>
-		</dialog>
+		<form method="post" action="/attend"><button type="submit">出勤</button><span th:text="${attendTime}"></span></form>
+		<form method="post" action="/leave"><button type="submit">退勤</button><span th:text="${leaveTime}"></span></form>
 		<span>リンク集</span>
 		<table>
 			<tr>
@@ -67,7 +71,7 @@
 		<input type="button" class="insert_button" value="+">
 	</linkarea>
 	<footer>
-		<span>フッター</span>
+		<span class="now_day_time"></span>
 	</footer>
 </body>
 
