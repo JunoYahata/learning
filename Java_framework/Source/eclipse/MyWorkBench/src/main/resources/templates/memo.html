@@ -10,10 +10,15 @@
 </head>
 
 <body>
-	<input type="button" value="新しいメモ" class="insert_button">
+	<input type="button" value="新しいメモ" class="insert_button">	
+	<label><input type="radio" class="tag_selector" name="tag_selector" data-tag="99" checked>すべて</label>
+	<label><input type="radio" class="tag_selector" name="tag_selector" data-tag="10">私用</label>
+	<label><input type="radio" class="tag_selector" name="tag_selector" data-tag="20">SeeD</label>
+	<label><input type="radio" class="tag_selector" name="tag_selector" data-tag="30">参画先</label>
+	
 
 	<th:block th:each="list : ${memos}" th:object="${list}">
-		<div class="memo">
+		<div th:class="'memo tag_'+*{tagCd}">
 			<div class="memo_title">
 				<table>
 					<tr>

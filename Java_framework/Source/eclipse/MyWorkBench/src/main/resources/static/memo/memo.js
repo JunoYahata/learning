@@ -16,6 +16,22 @@ document.querySelectorAll('.memo_outline').forEach((ol) => {
 	});
 });
 
+document.querySelectorAll('.tag_selector').forEach((ts) => {
+	ts.addEventListener('click', (e) => {
+		if (e.target.dataset.tag == '99') {
+			document.querySelectorAll('.memo').forEach((memo) => {
+				memo.classList.remove('hidden');
+			});
+		} else {
+			document.querySelectorAll('.memo').forEach((memo) => {
+				memo.classList.add('hidden');
+			});
+			document.querySelectorAll('.tag_' + e.target.dataset.tag).forEach((memo) => {
+				memo.classList.remove('hidden');
+			});
+		}
+	});
+});
 
 document.querySelector('.insert_button').addEventListener('click', () => {
 	window.parent.postMessage('memo/insert-action', '*');

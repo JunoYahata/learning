@@ -12,9 +12,13 @@
 <body>
 	<input type="button" value="新しいタスク" class="insert_button">
 	<input type="button" value="新しいタスク（汎用プロセス）" class="default_insert_button">
+	<label><input type="radio" class="tag_selector" name="tag_selector" data-tag="99" checked>すべて</label>
+	<label><input type="radio" class="tag_selector" name="tag_selector" data-tag="10">私用</label>
+	<label><input type="radio" class="tag_selector" name="tag_selector" data-tag="20">SeeD</label>
+	<label><input type="radio" class="tag_selector" name="tag_selector" data-tag="30">参画先</label>
 	<br>
 	<th:block th:each="task : ${tasks}">
-		<div class="task">
+		<div th:class="'task tag_'+${task.tagCd}">
 			<div class="task_title">
 				<table>
 					<tr>
